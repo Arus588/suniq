@@ -1,0 +1,51 @@
+:root {
+  color-scheme: dark;
+  --ink: #f6f8ef;
+  --muted: #b9c1af;
+  --surface: #172318;
+  --accent: #e7c84d;
+  --green: #86d477;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 75% 0%, #35481d 0, #101710 38rem);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.site-header, main {
+  width: min(100% - 2rem, 68rem);
+  margin-inline: auto;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+}
+
+.brand { color: var(--ink); font-size: 1.45rem; font-weight: 800; letter-spacing: -0.08em; text-decoration: none; }
+.brand span { color: var(--accent); }
+.site-header p { color: var(--muted); font-size: .9rem; margin: 0; }
+
+main { padding: 5rem 0; }
+.hero { max-width: 48rem; }
+.eyebrow { color: var(--accent); font-size: .75rem; font-weight: 750; letter-spacing: .13em; margin: 0 0 .85rem; text-transform: uppercase; }
+h1 { font-size: clamp(2.7rem, 7vw, 5.4rem); letter-spacing: -.065em; line-height: .98; margin: 0; }
+.intro { color: var(--muted); font-size: 1.15rem; line-height: 1.65; max-width: 42rem; margin: 1.7rem 0 0; }
+
+.status-card { align-items: center; background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid #3a4937; border-radius: 1.25rem; display: flex; gap: 2rem; justify-content: space-between; margin-top: 4.5rem; padding: 2rem; }
+h2 { font-size: 1.35rem; margin: 0 0 .6rem; }
+.status-card p:not(.eyebrow) { color: var(--muted); line-height: 1.5; margin: 0; max-width: 38rem; }
+.status-badge { background: #28451f; border: 1px solid #4c783d; border-radius: 100vmax; color: var(--green); font-size: .85rem; font-weight: 700; padding: .55rem .85rem; white-space: nowrap; }
+
+@media (max-width: 38rem) {
+  .site-header, .status-card { align-items: flex-start; flex-direction: column; }
+  main { padding: 3rem 0; }
+  .status-card { gap: 1.25rem; margin-top: 3rem; }
+}

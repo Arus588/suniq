@@ -1,7 +1,26 @@
-# suniq
+# SunIQ
 
-suniq is a low-cost adaptive solar-energy web application that uses real-time measurements and simple predictions to help small off-grid systems decide when to run a load, conserve energy, or charge a battery.
+SunIQ is a smart solar-energy system with a Flask web dashboard and Arduino firmware. It will use solar-panel measurements and simple predictions to help small off-grid systems decide when to run a load, conserve power, or charge a battery.
 
-## Status
+## Project structure
 
-Week 1: project setup.
+```text
+app.py                 Flask application
+templates/             Dashboard HTML templates
+static/                Dashboard styles and future JavaScript
+firmware/              Arduino code (coming soon)
+data/                  Recorded solar measurements (coming soon)
+```
+
+## Run locally
+
+SunIQ requires Python 3.9 or newer.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python app.py
+```
+
+Open `http://127.0.0.1:5000` in a browser.

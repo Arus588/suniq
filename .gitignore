@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration and generated data
+.env
+instance/
+data/*.csv
+
+# Editor files
+.vscode/
+.idea/
