@@ -44,6 +44,9 @@ h2 { font-size: 1.35rem; margin: 0 0 .6rem; }
 .status-card p:not(.eyebrow) { color: var(--muted); line-height: 1.5; margin: 0; max-width: 38rem; }
 .status-badge { background: #28451f; border: 1px solid #4c783d; border-radius: 100vmax; color: var(--green); font-size: .85rem; font-weight: 700; padding: .55rem .85rem; white-space: nowrap; }
 
+.creator { border-top: 1px solid #3a4937; margin-top: 4.5rem; max-width: 44rem; padding-top: 2.5rem; }
+.creator p:last-child { color: var(--muted); line-height: 1.65; margin: 0; }
+
 @media (max-width: 38rem) {
   .site-header, .status-card { align-items: flex-start; flex-direction: column; }
   main { padding: 3rem 0; }
