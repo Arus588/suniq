@@ -1,6 +1,6 @@
-# SunSmart
+# Solar Sense
 
-SunSmart is a low-cost adaptive solar-energy web application that uses real-time measurements and simple predictions to help small off-grid systems decide when to run a load, conserve energy, or charge a battery.
+Solar Sense is a low-cost adaptive solar-energy web application that uses real-time measurements and simple predictions to help small off-grid systems decide when to run a load, conserve energy, or charge a battery.
 
 ## Status
 
