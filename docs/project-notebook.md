@@ -6,6 +6,10 @@ This notebook records the design, testing, learning, and evidence for the SunIQ 
 
 How can SunIQ help a small off-grid solar system use energy more wisely?
 
+## Clear goal
+
+SunIQ helps small off-grid solar systems use energy wisely by extending useful battery operating time. The project will measure solar power, track historical data, and test whether informed load decisions conserve energy compared with normal operation.
+
 ## Weekly entry template
 
 ```text
@@ -88,6 +92,33 @@ The first solar-panel test has not been performed yet.
 ### What I changed
 
 - Started with a Flask dashboard rather than a standalone HTML page so the project can later accept sensor readings and CSV data.
+
+## Work log: September 13, 2026
+
+### What I completed today
+
+- Reviewed the Week 1 plan and identified the remaining hardware tasks.
+- Created a CSV build tracker in `docs/sunsmart-build-tracker.csv` with week, item, status, completion date, ETA, and notes columns.
+- Broke the Week 1 hardware work into individual checklist items for each part and each measurement step.
+- Recorded that the Arduino, solar panel, INA219 sensor, breadboard, jumper wires, multimeter, resistors/LEDs/switches, and USB power supply are available.
+- Built the Week 2 simulated dashboard with voltage, current, power, and battery-level readings.
+- Added Sunny, Cloudy, and Shaded controls that update the dashboard.
+- Added a solar-power chart based on simulated readings.
+- Added a manual measurement table and safety guidance for the daylight hardware test.
+- Added `data/measurements/solar-readings-2026-09-14.csv` and updated Flask to load the newest dated measurement CSV automatically.
+- Added the clear project goal to the dashboard, README, and notebook.
+
+### Software verification
+
+- Started the Flask development server locally.
+- Confirmed the dashboard loads successfully with HTTP 200.
+- Confirmed the dashboard displays data loaded from the dated CSV file.
+
+### Still pending
+
+- Perform the first open-circuit solar-panel voltage measurement during daylight.
+- Build and test the low-voltage LED/resistor circuit.
+- Replace the simulated CSV readings with real hardware measurements.
 
 ### Evidence saved
 

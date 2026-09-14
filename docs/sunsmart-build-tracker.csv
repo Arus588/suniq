@@ -1,0 +1,38 @@
+﻿Week,Item,Status,Date completed,ETA,Notes
+W1,Learn voltage basics,Complete,9/13/2026,,Documented in the project notebook.
+W1,Learn current basics,Complete,9/13/2026,,Documented in the project notebook.
+W1,Learn power and energy basics,Complete,9/13/2026,,Power equals voltage times current; documented in the project notebook.
+W1,Learn solar-panel basics,Complete,9/13/2026,,Sunlight and panel angle effects documented in the project notebook.
+W1,Learn Arduino basics,Complete,9/13/2026,9/14/2026,
+W1,Learn Python basics,Complete,9/13/2026,9/14/2026,Used Python to run the Flask app.
+W1,Learn HTML basics,Complete,9/13/2026,9/14/2026,Used HTML templates for the dashboard.
+W1,Learn CSS basics,Complete,9/13/2026,9/14/2026,Used CSS for dashboard styling.
+W1,Learn JavaScript basics,Complete,9/13/2026,9/14/2026,
+W1,Start the project notebook,Complete,9/13/2026,9/14/2026,docs/project-notebook.md exists with Week 1 notes.
+W1,Create the GitHub repository,Complete,9/13/2026,9/14/2026,Repository connected to origin/main.
+W1,Create the basic Flask dashboard foundation,Complete,9/13/2026,9/14/2026,Local dashboard returned HTTP 200.
+W1,Parts list - Arduino Uno-compatible board,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - Small 6 V 2-6 W solar panel,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - INA219 voltage/current sensor,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - Breadboard and jumper wires,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - Digital multimeter,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - Resistors LEDs and switches,Complete,9/13/2026,9/14/2026,Available
+W1,Parts list - USB cable and 5 V power supply,Complete,9/13/2026,9/14/2026,Available
+W1,Complete the system diagram,Complete,9/13/2026,9/14/2026,Diagram saved under md/assets/.
+W1,Voltage measurement - Set up the panel in sunlight,Not started,,9/14/2026,Hardware measurement setup is still pending.
+W1,Voltage measurement - Set multimeter to DC voltage,Not started,,9/14/2026,Use the correct range and observe polarity.
+W1,Voltage measurement - Measure open-circuit panel voltage,Not started,,9/14/2026,Record the voltage in volts.
+W1,Voltage measurement - Record date weather angle and location,Not started,,9/14/2026,Add conditions to docs/project-notebook.md.
+W2,"Add simulated voltage, current, power, and battery-level data",Complete,2026-09-13,,Added to the Flask dashboard.
+W2,Add a solar-power chart,Complete,2026-09-13,,Added an inline SVG chart using simulated data.
+W2,Add Sunny Cloudy and Shaded controls,Complete,2026-09-13,,Buttons update the dashboard readings and chart.
+W2,Build the solar-panel and LED/resistor test circuit,Not started,,9/18/2026,Use a low-voltage setup.
+W2,Measure voltage current and power manually,Not started,,9/20/2026,
+W2,Test different panel angles,Not started,,9/20/2026,
+W2,Record at least three manual solar tests,Not started,,9/21/2026,
+W3,Add power calculations and energy-management recommendations,Not started,,9/28/2026,
+W4,Read solar measurements with Arduino and INA219,Not started,,10/5/2026,
+W5,Record real measurements as CSV and connect them to the app,Not started,,10/12/2026,
+W6,Add prediction and MPPT-versus-PWM comparison,Not started,,10/19/2026,
+W7,Test polish document and submit the project,Not started,,10/26/2026,
+

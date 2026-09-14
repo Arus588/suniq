@@ -2,6 +2,10 @@
 
 SunIQ is a smart solar-energy system with a Flask web dashboard and Arduino firmware. It will use solar-panel measurements and simple predictions to help small off-grid systems decide when to run a load, conserve power, or charge a battery.
 
+## Project goal
+
+SunIQ helps small off-grid solar systems use energy wisely by extending useful battery operating time. It does this by measuring solar power, tracking historical readings, and recommending when to run or conserve energy-consuming loads.
+
 ## Project structure
 
 ```text
