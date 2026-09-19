@@ -253,3 +253,99 @@ Evidence: `data/measurements/solar-readings-2026-09-19.csv` contains all twelve 
 - Simulation inputs do not change the CSV and do not control hardware.
 - Four automated tests passed: power/energy calculations, rule boundaries and precedence, invalid-input handling, and page rendering/data isolation. Browser visual verification was unavailable.
 - INA219/UNO wiring and sensor validation remain pending.
+
+
+## Learning notes: parts and concepts from our first circuit
+
+### Solar panel: the source
+
+A solar panel converts light into electrical energy. Our panel is labeled DC 6 V. Its actual voltage depends on lighting, temperature, and the connected load. The label is a rating, not a promise that every measurement will be exactly 6 V. The panel produced the voltage; the multimeter displayed it.
+
+### Breadboard: connect parts without soldering
+
+A breadboard is a plastic board with holes and metal contacts underneath. It lets us build, change, and reuse a circuit without soldering the parts together. It does not generate power.
+
+On our typical A-J breadboard, A-E in one numbered row form one connected group. F-J in the same row form another group, separated by the center gap. Different numbered rows are separate. Side power rails are convenient shared connections; some rails are split halfway, so do not assume the entire rail is connected. The printed + and - marks are labels, not built-in power supplies.
+
+For example, A10, C10, and E10 are electrically connected. E10 and E11 are not. This is why we placed the LED legs in different rows.
+
+### Resistor: limit current
+
+A resistor opposes current flow. It usually has a small striped body and a wire at each end. Resistance is measured in ohms; 1 kOhm means 1,000 ohms. The colored bands identify its value and tolerance. An ordinary resistor works in either direction.
+
+Our series resistor limits current through the LED. Without suitable current limiting, an LED can be damaged. We confirmed the resistor's nominal value as 1 kOhm. Nominal resistance has a manufacturing tolerance, so current calculated from it is an estimate. A resistor also has a power rating: it must be able to dissipate the heat produced in it.
+
+### LED: a light-emitting diode
+
+An LED emits light when suitable current flows through it in the forward direction. It has polarity: on a typical new indicator LED, the longer leg is the anode (+) and the shorter leg is the cathode (-). The flat edge of the body commonly marks the cathode. If legs have been trimmed, length alone is not reliable.
+
+Our LED lit up when powered by the panel through the resistor. It can sit slightly slanted on the breadboard; what matters is secure contact and that its metal legs do not touch each other.
+
+### Jumper wires: connect circuit points
+
+Jumper wires link breadboard holes or other compatible connectors. Male ends have exposed pins; female ends have sockets. Male-to-male wires fit breadboard holes at both ends. Red is conventionally used for positive and black for negative, but color itself does not determine the electrical connection.
+
+A plug on a solar panel needs a matching connector or adapter; a jumper wire is not a universal plug adapter. Keep connections secure and exposed positive and negative contacts apart.
+
+### Multimeter: measure, rather than supply, panel voltage
+
+A multimeter can measure different electrical quantities depending on its dial setting and input sockets. For these tests, black went into COM, red into the voltage-capable socket, and the dial was set to 20 V DC. The shared V/ohm/mA socket label does not mean all functions are active at once; the dial selects the measurement.
+
+Voltage is measured across two points (in parallel). Direct current measurement requires a different, series connection and the appropriate meter input/range. We did not use current mode: we measured resistor voltage and calculated current instead. Never switch to current mode while the probes remain across the panel.
+
+### Circuit, load, and our connection
+
+A circuit needs a complete conducting loop for sustained current. A load uses electrical energy; our LED/resistor combination is the panel's load. Components in series carry the same circuit current, apart from the tiny current drawn by a connected voltmeter.
+
+```text
+Panel (+) -> A15/C15 -> 1 kOhm resistor -> C10/E10
+                                             |
+                                         LED long leg
+                                         LED short leg
+                                             |
+Panel (-) <------------------------------- A11/E11
+```
+
+The UNO board is a programmable controller; the INA219 is a voltage/current sensor. Neither was needed for this manual test. They are planned for automatic readings in Week 3.
+
+### Voltage, current, power, and energy
+
+| Quantity | Meaning | Unit | Formula used |
+| --- | --- | --- | --- |
+| Voltage | Electrical potential difference between two points | volt (V) | Measured across panel or resistor |
+| Current | Rate of electric charge flow | ampere (A), or milliampere (mA) | I = resistor voltage / resistance |
+| Power | Rate of electrical energy transfer | watt (W), or milliwatt (mW) | P = loaded panel voltage * current |
+| Energy | Electrical energy transferred over a duration | watt-hour (Wh) | E = power * hours, if power stays constant |
+
+1 A = 1,000 mA, and 1 W = 1,000 mW. Power and energy are different: a watt is a rate; a watt-hour is an amount.
+
+DC maintains polarity; AC repeatedly reverses it. Our solar panel produces DC. Its voltage can rise or fall while remaining DC. The meter's DC-voltage marking is V with a straight line above a dashed line (or DCV); V with a wavy line means AC.
+
+Open-circuit voltage is measured with no load attached except the meter. Loaded voltage is measured while the LED/resistor circuit is connected. Open-circuit voltage alone cannot tell us available power.
+
+### Worked example from our 90-degree-label test
+
+We measured 4.80 V across the 1,000-ohm resistor and 6.78 V across the loaded panel:
+
+```text
+Estimated current = 4.80 / 1000 = 0.00480 A = 4.80 mA
+Panel power = 6.78 * 0.00480 = 0.032544 W = 32.544 mW
+```
+
+Use resistor voltage to calculate current, not the full panel voltage: some voltage drops across the LED. The panel voltage and resistor voltage should be measured close together without changing panel position or lighting.
+
+If that power stayed constant for two hours, energy would be 0.065088 Wh. This is a hypothetical duration example, not energy we actually measured. Separate manual observations cannot establish a day's energy production.
+
+### Final session status and measurement habits
+
+The CSV now contains fifteen observations: seven open-circuit, five loaded-voltage-only, and three paired panel/resistor measurements. The three paired measurements have estimated current and calculated power. This completes the planned Week 2 manual circuit tests; earlier pending statements describe the session before these pairs were collected.
+
+| Panel-angle label | Resistor voltage (V) | Panel voltage (V) | Estimated current (mA) | Calculated power (mW) |
+| --- | --- | --- | --- | --- |
+| 135 | 5.50 | 6.80 | 5.50 | 37.40 |
+| 180 | 4.73 | 6.63 | 4.73 | 31.36 |
+| 90 | 4.80 | 6.78 | 4.80 | 32.54 |
+
+The 135-label pair implies a 1.30 V difference between panel and resistor voltage, compared with 1.90 V and 1.98 V in the other pairs. Repeating that pair under steady conditions would help check probe contact and changing sunlight; retain the original measurements rather than silently correcting them.
+
+For future tests, hold the panel on a stable support, keep wires slack, record LED status, and distinguish measured values from calculated or simulated values. Our angle labels are personal position descriptions, not calibrated geometric measurements. Cover the panel before changing wiring and disconnect it when finished.
