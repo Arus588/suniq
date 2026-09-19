@@ -242,3 +242,14 @@ Keep the meter in voltage mode for this method. Any later direct current measure
 ### Evidence and remaining Week 2 work
 
 Evidence: `data/measurements/solar-readings-2026-09-19.csv` contains all twelve observations. The LED circuit and the session's loaded-voltage tests are complete. Current determination, power calculations, and documenting those results remain before the Week 2 voltage/current/power work is complete.
+
+
+## Week 3 software: energy and recommendation simulation
+
+- Added a separate simulation form with sunlight percentage, battery percentage, duration, and steady/falling sunlight controls. Submit Update simulation to recalculate.
+- The illustrative model assumes constant 6 V and up to 5 mA, proportional to sunlight. Power is V * I; estimated energy is power * hours. It does not integrate the separate manual observations or estimate actual battery charging.
+- Rules prioritize low battery (<20%), falling sunlight, and weak sunlight (<30%) for conservation. Strong sunlight (>=70%) plus battery >=50% recommends running a load. Otherwise, battery <90% recommends charging; remaining cases conserve. Thresholds are illustrative, not validated hardware control settings.
+- Corrected recorded-data labels to recognize both loaded and open-circuit measurements, and added measurement type to the log table.
+- Simulation inputs do not change the CSV and do not control hardware.
+- Four automated tests passed: power/energy calculations, rule boundaries and precedence, invalid-input handling, and page rendering/data isolation. Browser visual verification was unavailable.
+- INA219/UNO wiring and sensor validation remain pending.

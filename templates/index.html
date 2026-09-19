@@ -9,12 +9,12 @@
 </section>
 
 {% set latest = measurements[-1] if measurements else {} %}
-{% set recorded = latest.get('measurement_type') == 'open_circuit_voltage' %}
+{% set recorded = latest.get('measurement_type') in ['open_circuit_voltage', 'loaded_voltage'] %}
 <section class="status-card" aria-labelledby="status-heading">
   <div><p class="eyebrow">System status</p>
     <h2 id="status-heading">{{ 'Recorded solar measurements' if recorded else 'Sample dashboard' }}</h2>
-    <p>{{ measurements|length }} readings{% if latest %} ? {{ latest.get('timestamp', '')[:10] }}{% endif %}.
-    {% if recorded %}Manually recorded open-circuit voltage. Current, power, and battery level have not been measured.{% else %}Sample data for exploring the dashboard.{% endif %} Refresh to see newly logged readings.</p>
+    <p>{{ measurements|length }} readings{% if latest %} &middot; {{ latest.get('timestamp', '')[:10] }}{% endif %}.
+    {% if recorded %}Manual open-circuit and loaded-voltage readings. Where resistor measurements are available, current is estimated from resistance and power is calculated. Battery level is not measured.{% else %}Sample data for exploring the dashboard.{% endif %} Refresh to see newly logged readings.</p>
   </div><span class="status-badge">{{ 'Measured voltage' if recorded else 'Simulation' }}</span>
 </section>
 <section class="dashboard-panel" aria-labelledby="readings-heading">
@@ -33,11 +33,33 @@
 </section>
 <section class="dashboard-panel" aria-labelledby="tests-heading">
   <p class="eyebrow">Measurement log</p><h2 id="tests-heading">Recorded readings</h2>
-  <p class="muted">Times include the UTC offset. Positions use your descriptive convention: sun 135&deg;; panel up 180&deg;, down -180&deg;, facing sun or opposite 135&deg;. These are user-assigned labels, not measured geometric angles.</p>
-  <div class="table-scroll"><table><thead><tr><th>Date / time</th><th>Condition</th><th>Voltage (V)</th><th>Sun position</th><th>Panel angle (convention)</th></tr></thead><tbody>
-  {% for row in measurements %}<tr><td>{{ row.get('timestamp', '') }}</td><td>{{ row.scenario }}</td><td>{{ row.voltage_v }}</td><td>{{ row.get('sun_position') or 'Not recorded' }}{% if row.get('sun_position') %}&deg;{% endif %}</td><td>{{ row.get('panel_angle') or 'Not defined' }}{% if row.get('panel_angle') %}&deg;{% endif %}</td></tr>
-  {% else %}<tr><td colspan="5">No readings recorded yet.</td></tr>{% endfor %}
+  <p class="muted">Times include the UTC offset. Sun and panel positions are user-assigned labels, not measured geometric angles. These separate manual observations are not a continuous energy log.</p>
+  <div class="table-scroll"><table><thead><tr><th>Date / time</th><th>Condition</th><th>Voltage (V)</th><th>Measurement type</th><th>Sun position</th><th>Panel angle (convention)</th></tr></thead><tbody>
+  {% for row in measurements %}<tr><td>{{ row.get('timestamp', '') }}</td><td>{{ row.scenario }}</td><td>{{ row.voltage_v }}</td><td>{{ row.get('measurement_type', 'sample')|replace('_', ' ') }}</td><td>{{ row.get('sun_position') or 'Not recorded' }}{% if row.get('sun_position') %}&deg;{% endif %}</td><td>{{ row.get('panel_angle') or 'Not defined' }}{% if row.get('panel_angle') %}&deg;{% endif %}</td></tr>
+  {% else %}<tr><td colspan="6">No readings recorded yet.</td></tr>{% endfor %}
   </tbody></table></div>
+</section>
+
+<section class="dashboard-panel" id="simulation" aria-labelledby="simulation-heading">
+  <p class="eyebrow">Simulation only</p>
+  <h2 id="simulation-heading">Try energy decisions</h2>
+  <p class="muted">Explore illustrative rules without hardware. These controls do not change recorded readings or operate your circuit.</p>
+  <form action="/#simulation" method="get" class="simulation-controls">
+    <label>Sunlight (%)<input name="sunlight" type="number" min="0" max="100" step="1" value="{{ simulation.sunlight|int }}" required></label>
+    <label>Battery (%)<input name="battery" type="number" min="0" max="100" step="1" value="{{ simulation.battery|int }}" required></label>
+    <label>Duration (hours)<input name="hours" type="number" min="0" max="24" step="0.1" value="{{ simulation.hours }}" required></label>
+    <label>Sunlight trend<select name="trend"><option value="steady" {% if simulation.trend == 'steady' %}selected{% endif %}>Steady</option><option value="falling" {% if simulation.trend == 'falling' %}selected{% endif %}>Falling</option></select></label>
+    <button type="submit">Update simulation</button>
+  </form>
+  <div class="metrics">
+    <div class="metric"><span>Simulated voltage</span><strong>6.00 V</strong></div>
+    <div class="metric"><span>Simulated current</span><strong>{{ '%.2f'|format(simulation.current * 1000) }} mA</strong></div>
+    <div class="metric"><span>Simulated power</span><strong>{{ '%.2f'|format(simulation.power * 1000) }} mW</strong></div>
+    <div class="metric"><span>Estimated energy</span><strong>{{ '%.5f'|format(simulation.energy) }} Wh</strong></div>
+  </div>
+  <div class="recommendation" aria-live="polite"><h3>{{ simulation.action }}</h3><p>{{ simulation.reason }}</p></div>
+  <p class="muted">Assumptions: constant 6 V, current increasing linearly to 5 mA at 100% sunlight. Power = voltage &times; current; energy = power &times; hours. This is an illustrative model, not your panel's rated output or measured energy. The energy estimate holds power constant; the trend control affects only the recommendation. Battery percentage is an input, not a charging forecast.</p>
+  <details><summary>How recommendations work</summary><p>Rules apply in order: battery below 20%, falling sunlight, or sunlight below 30% means conserve. Otherwise, sunlight at least 70% and battery at least 50% means run the load. Otherwise, battery below 90% means charge; remaining cases conserve. These demonstration thresholds have not been validated for a battery or load.</p></details>
 </section>
 
 <section class="creator" aria-labelledby="creator-heading">
@@ -64,7 +86,7 @@ function setScenario(name) {
   document.querySelector('#current').textContent = a === null ? 'Not measured' : `${a} A`;
   document.querySelector('#power').textContent = v === null || a === null ? 'Not measured' : `${(v*a).toFixed(2)} W`;
   document.querySelector('#battery').textContent = battery === null ? 'Not measured' : `${battery}%`;
-  document.querySelector('#chart-label').textContent = `${name} ? ${rows.length} readings`;
+  document.querySelector('#chart-label').textContent = `${name} - ${rows.length} readings`;
   document.querySelectorAll('.scenario').forEach(button => button.classList.toggle('active', button.dataset.scenario === name));
   renderChart(rows);
 }
