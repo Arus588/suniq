@@ -1,0 +1,16 @@
+timestamp,scenario,voltage_v,current_a,battery_percent,sun_position,panel_angle,measurement_type,resistor_voltage_v,resistance_ohm,power_w
+2026-09-19T11:37:27-07:00,sunny,6.84,,,135,135,open_circuit_voltage,,,
+2026-09-19T11:40:06-07:00,sunny,6.80,,,135,180,open_circuit_voltage,,,
+2026-09-19T11:41:11-07:00,sunny,6.90,,,135,135,open_circuit_voltage,,,
+2026-09-19T11:41:35-07:00,sunny,2.74,,,135,-180,open_circuit_voltage,,,
+2026-09-19T11:41:59-07:00,sunny,6.00,,,135,135,open_circuit_voltage,,,
+2026-09-19T11:42:50-07:00,sunny,6.87,,,135,180,open_circuit_voltage,,,
+2026-09-19T11:43:12-07:00,sunny,6.94,,,135,135,open_circuit_voltage,,,
+2026-09-19T14:53:13-07:00,sunny,6.66,,,160,180,loaded_voltage,,,
+2026-09-19T14:55:05-07:00,sunny,6.86,,,160,135,loaded_voltage,,,
+2026-09-19T14:55:47-07:00,sunny,3.47,,,160,45,loaded_voltage,,,
+2026-09-19T14:56:28-07:00,sunny,1.57,,,160,-180,loaded_voltage,,,
+2026-09-19T14:57:45-07:00,sunny,6.76,,,160,90,loaded_voltage,,,
+2026-09-19T15:09:16-07:00,sunny,6.80,0.0055,,160,135,loaded_voltage,5.5,1000,0.037400
+2026-09-19T15:12:23-07:00,sunny,6.63,0.00473,,160,180,loaded_voltage,4.73,1000,0.0313599
+2026-09-19T15:15:00-07:00,sunny,6.78,0.0048,,160,90,loaded_voltage,4.80,1000,0.032544

@@ -11,7 +11,7 @@ def load_measurements():
     data_files = sorted(DATA_DIR.glob("solar-readings-*.csv"))
     if not data_files:
         return []
-    with data_files[-1].open(newline="", encoding="utf-8") as csv_file:
+    with data_files[-1].open(newline="", encoding="utf-8-sig") as csv_file:
         return list(csv.DictReader(csv_file))
 
 

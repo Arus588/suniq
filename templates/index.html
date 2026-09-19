@@ -8,28 +8,36 @@
   <p class="intro">SunIQ tracks solar measurements, predicts available energy, and recommends when to run a load, conserve power, or charge a battery.</p>
 </section>
 
+{% set latest = measurements[-1] if measurements else {} %}
+{% set recorded = latest.get('measurement_type') == 'open_circuit_voltage' %}
 <section class="status-card" aria-labelledby="status-heading">
-  <div>
-    <p class="eyebrow">System status</p>
-    <h2 id="status-heading">Simulated dashboard</h2>
-    <p>Explore sample readings now. Hardware readings can be connected later.</p>
-  </div>
-  <span class="status-badge" id="status-badge">Simulation</span>
+  <div><p class="eyebrow">System status</p>
+    <h2 id="status-heading">{{ 'Recorded solar measurements' if recorded else 'Sample dashboard' }}</h2>
+    <p>{{ measurements|length }} readings{% if latest %} ? {{ latest.get('timestamp', '')[:10] }}{% endif %}.
+    {% if recorded %}Manually recorded open-circuit voltage. Current, power, and battery level have not been measured.{% else %}Sample data for exploring the dashboard.{% endif %} Refresh to see newly logged readings.</p>
+  </div><span class="status-badge">{{ 'Measured voltage' if recorded else 'Simulation' }}</span>
 </section>
-
 <section class="dashboard-panel" aria-labelledby="readings-heading">
-  <div class="panel-heading"><div><p class="eyebrow">Live-style readings</p><h2 id="readings-heading">Solar conditions</h2></div>
-    <div class="scenario-buttons" role="group" aria-label="Simulated weather"><button class="scenario active" data-scenario="sunny">Sunny</button><button class="scenario" data-scenario="cloudy">Cloudy</button><button class="scenario" data-scenario="shaded">Shaded</button></div>
+  <div class="panel-heading"><h2 id="readings-heading">Latest readings</h2>
+    <div class="scenario-buttons" role="group" aria-label="Weather conditions">
+    {% for name in ['sunny', 'cloudy', 'shaded'] %}<button class="scenario" data-scenario="{{ name }}">{{ name|capitalize }}</button>{% endfor %}
+    </div>
   </div>
-  <div class="metrics"><div class="metric"><span>Voltage</span><strong id="voltage">18.4 V</strong></div><div class="metric"><span>Current</span><strong id="current">1.42 A</strong></div><div class="metric"><span>Power</span><strong id="power">26.1 W</strong></div><div class="metric"><span>Battery</span><strong id="battery">78%</strong></div></div>
-  <div class="chart-wrap"><div class="chart-title"><h3>Solar power over time</h3><span id="chart-label">Sunny conditions</span></div><svg id="power-chart" viewBox="0 0 700 220" role="img" aria-label="Solar power chart"></svg></div>
+  <div class="metrics">
+    <div class="metric"><span>Voltage</span><strong id="voltage">{{ latest.get('voltage_v', '?') }} V</strong></div>
+    <div class="metric"><span>Current</span><strong id="current">Not measured</strong></div>
+    <div class="metric"><span>Power</span><strong id="power">Not measured</strong></div>
+    <div class="metric"><span>Battery</span><strong id="battery">Not measured</strong></div>
+  </div>
+  <div class="chart-wrap"><div class="chart-title"><h3>Voltage by reading</h3><span id="chart-label"></span></div><svg id="power-chart" viewBox="0 0 700 220" role="img" aria-label="Measured voltage by reading"></svg></div>
 </section>
-
 <section class="dashboard-panel" aria-labelledby="tests-heading">
-  <p class="eyebrow">Tomorrow’s experiment</p><h2 id="tests-heading">Manual measurement table</h2>
-  <p class="muted">Record three low-voltage tests in daylight. Calculate power as <code>voltage × current</code>.</p>
-  <div class="table-scroll"><table><thead><tr><th>Test</th><th>Condition</th><th>Voltage (V)</th><th>Current (A)</th><th>Power (W)</th><th>Angle</th></tr></thead><tbody><tr><td>1</td><td>Full sun</td><td>________</td><td>________</td><td>________</td><td>________</td></tr><tr><td>2</td><td>Shade/cloud</td><td>________</td><td>________</td><td>________</td><td>________</td></tr><tr><td>3</td><td>Different angle</td><td>________</td><td>________</td><td>________</td><td>________</td></tr></tbody></table></div>
-  <div class="safety"><strong>Safety reminder:</strong> Use only the small low-voltage panel. Confirm polarity, use DC voltage mode for open-circuit voltage, and never connect a battery or short the panel.</div>
+  <p class="eyebrow">Measurement log</p><h2 id="tests-heading">Recorded readings</h2>
+  <p class="muted">Times include the UTC offset. Positions use your descriptive convention: sun 135&deg;; panel up 180&deg;, down -180&deg;, facing sun or opposite 135&deg;. These are user-assigned labels, not measured geometric angles.</p>
+  <div class="table-scroll"><table><thead><tr><th>Date / time</th><th>Condition</th><th>Voltage (V)</th><th>Sun position</th><th>Panel angle (convention)</th></tr></thead><tbody>
+  {% for row in measurements %}<tr><td>{{ row.get('timestamp', '') }}</td><td>{{ row.scenario }}</td><td>{{ row.voltage_v }}</td><td>{{ row.get('sun_position') or 'Not recorded' }}{% if row.get('sun_position') %}&deg;{% endif %}</td><td>{{ row.get('panel_angle') or 'Not defined' }}{% if row.get('panel_angle') %}&deg;{% endif %}</td></tr>
+  {% else %}<tr><td colspan="5">No readings recorded yet.</td></tr>{% endfor %}
+  </tbody></table></div>
 </section>
 
 <section class="creator" aria-labelledby="creator-heading">
@@ -39,9 +47,31 @@
 </section>
 <script>
 const measurements = {{ measurements | tojson }};
-const scenarios = Object.fromEntries(['sunny', 'cloudy', 'shaded'].map(name => { const rows = measurements.filter(row => row.scenario === name); return [name, { row: rows[rows.length - 1], points: rows.map(row => Number(row.voltage_v) * Number(row.current_a)), label: `${name[0].toUpperCase() + name.slice(1)} conditions` }]; }));
-function renderChart(points) { const max = 35, path = points.map((v,i) => `${i ? 'L' : 'M'} ${45 + i*100} ${185 - v/max*150}`).join(' '); document.querySelector('#power-chart').innerHTML = `<path class="gridline" d="M45 35H645 M45 85H645 M45 135H645 M45 185H645"/><path class="chart-line" d="${path}"/><text x="45" y="210">Now</text><text x="600" y="210">+6h</text><text x="8" y="40">35W</text><text x="14" y="190">0W</text>`; }
-function setScenario(name) { const s=scenarios[name], row=s.row; document.querySelector('#voltage').textContent=`${row.voltage_v} V`; document.querySelector('#current').textContent=`${row.current_a} A`; document.querySelector('#power').textContent=`${(Number(row.voltage_v)*Number(row.current_a)).toFixed(1)} W`; document.querySelector('#battery').textContent=`${row.battery_percent}%`; document.querySelector('#chart-label').textContent=`${s.label} · CSV data`; document.querySelectorAll('.scenario').forEach(b=>b.classList.toggle('active',b.dataset.scenario===name)); renderChart(s.points); }
-document.querySelectorAll('.scenario').forEach(b=>b.addEventListener('click',()=>setScenario(b.dataset.scenario))); setScenario('sunny');
+const numeric = value => value == null || String(value).trim() === '' || !Number.isFinite(Number(value)) ? null : Number(value);
+function renderChart(rows) {
+  const points = rows.map(row => numeric(row.voltage_v));
+  const max = Math.max(1, Math.ceil(Math.max(...points.filter(v => v !== null))));
+  const coords = points.map((v, i) => v === null ? null : [45 + i * 600 / Math.max(1, points.length - 1), 185 - v / max * 150]);
+  const path = coords.map((p, i) => p ? `${i && coords[i-1] ? 'L' : 'M'} ${p[0]} ${p[1]}` : '').join(' ');
+  document.querySelector('#power-chart').innerHTML = `<path class="gridline" d="M45 35H645 M45 85H645 M45 135H645 M45 185H645"/><path class="chart-line" d="${path}"/>${coords.filter(Boolean).map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="var(--accent)"/>`).join('')}<text x="45" y="210">First reading</text><text x="570" y="210">Latest reading</text><text x="8" y="30">${max} V</text><text x="8" y="190">0 V</text>`;
+}
+function setScenario(name) {
+  const rows = measurements.filter(row => row.scenario === name);
+  if (!rows.length) return;
+  const row = rows[rows.length - 1];
+  const v = numeric(row.voltage_v), a = numeric(row.current_a), battery = numeric(row.battery_percent);
+  document.querySelector('#voltage').textContent = v === null ? 'Not measured' : `${v.toFixed(2)} V`;
+  document.querySelector('#current').textContent = a === null ? 'Not measured' : `${a} A`;
+  document.querySelector('#power').textContent = v === null || a === null ? 'Not measured' : `${(v*a).toFixed(2)} W`;
+  document.querySelector('#battery').textContent = battery === null ? 'Not measured' : `${battery}%`;
+  document.querySelector('#chart-label').textContent = `${name} ? ${rows.length} readings`;
+  document.querySelectorAll('.scenario').forEach(button => button.classList.toggle('active', button.dataset.scenario === name));
+  renderChart(rows);
+}
+document.querySelectorAll('.scenario').forEach(button => {
+  button.disabled = !measurements.some(row => row.scenario === button.dataset.scenario);
+  button.addEventListener('click', () => setScenario(button.dataset.scenario));
+});
+if (measurements.length) setScenario(measurements[measurements.length - 1].scenario);
 </script>
 {% endblock %}
