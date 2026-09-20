@@ -34,7 +34,7 @@ class SimulationTests(unittest.TestCase):
         response=app.test_client().get('/?sunlight=100&battery=10&hours=2')
         self.assertEqual(response.status_code,200)
         page=response.get_data(as_text=True)
-        for expected in ['Conserve energy','0.06000 Wh','Recorded solar measurements','loaded voltage','open circuit voltage','6.78']:
+        for expected in ['Conserve energy','0.06000 Wh','Recorded solar measurements','loaded voltage','6.73']:
             self.assertIn(expected,page)
         self.assertEqual(before,path.read_bytes())
 

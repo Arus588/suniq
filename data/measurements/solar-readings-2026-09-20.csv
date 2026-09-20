@@ -1,0 +1,6 @@
+timestamp,scenario,voltage_v,current_a,battery_percent,sun_position,panel_angle,measurement_type,resistor_voltage_v,resistance_ohm,power_w
+2026-09-20T11:53:30-07:00,cloudy,6.73,0.00481,,46.6,180,loaded_voltage,4.81,1000,0.0324013
+2026-09-20T11:53:43-07:00,cloudy,6.73,0.00481,,46.6,135,loaded_voltage,4.81,1000,0.0324013
+2026-09-20T11:54:02-07:00,cloudy,6.42,0.00452,,46.6,90,loaded_voltage,4.52,1000,0.0290184
+2026-09-20T11:54:22-07:00,cloudy,6.60,0.00471,,46.6,45,loaded_voltage,4.71,1000,0.031086
+2026-09-20T11:54:45-07:00,cloudy,1.63,0,,46.6,-180,loaded_voltage,0,1000,0

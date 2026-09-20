@@ -349,3 +349,28 @@ The CSV now contains fifteen observations: seven open-circuit, five loaded-volta
 The 135-label pair implies a 1.30 V difference between panel and resistor voltage, compared with 1.90 V and 1.98 V in the other pairs. Repeating that pair under steady conditions would help check probe contact and changing sunlight; retain the original measurements rather than silently correcting them.
 
 For future tests, hold the panel on a stable support, keep wires slack, record LED status, and distinguish measured values from calculated or simulated values. Our angle labels are personal position descriptions, not calibrated geometric measurements. Cover the panel before changing wiring and disconnect it when finished.
+
+### 2026-09-20 cloudy-day findings
+
+Conditions were cloudy with the sun at 46.6 degrees. The panel measurements were:
+
+| Panel-angle label | Panel voltage (V) | Resistor reading (V) |
+| --- | ---: | ---: |
+| 180 | 6.73 | 4.81 |
+| 135 | 6.73 | 4.81 |
+| 90 | 6.42 | 4.52 |
+| 45 | 6.60 | 4.71 |
+| -180 | 1.63 | 0.00 |
+
+The 135 and 180 readings were identical at the meter's displayed precision and were taken only seconds apart. The -180 result is much lower, but -180 and 180 can represent the same direction mathematically; the angle-label convention or the physical setup should therefore be checked before drawing a firm conclusion. Cloud cover and the lower sun position also reduced and made the available light less stable than on sunny days.
+
+These readings do not include measured current, so power should not be calculated from them yet. The resistor readings should be treated as resistor voltage unless the physical resistance value is recorded separately.
+
+### Next steps
+
+1. Repeat each angle three times under the same lighting, using a stable stand and the same load.
+2. Define one angle convention and mark the panel orientation physically; do not use both 180 and -180 for the same direction unless they are intentionally different positions.
+3. Record panel voltage, resistor voltage, resistor resistance, current, LED status, and whether the reading is open-circuit or loaded.
+4. Calculate current with `I = resistor voltage / resistance`, then calculate loaded power with `P = panel voltage * current`.
+5. Add a simple summary chart to the dashboard after the repeat measurements are collected.
+6. Proceed to the planned Arduino/INA219 measurement once the manual test is repeatable.

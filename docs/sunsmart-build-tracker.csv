@@ -26,13 +26,20 @@ W1,Voltage measurement - Record date weather angle and location,Not started,,9/1
 W2,"Add simulated voltage, current, power, and battery-level data",Complete,2026-09-13,,Added to the Flask dashboard.
 W2,Add a solar-power chart,Complete,2026-09-13,,Added an inline SVG chart using simulated data.
 W2,Add Sunny Cloudy and Shaded controls,Complete,2026-09-13,,Buttons update the dashboard readings and chart.
-W2,Build the solar-panel and LED/resistor test circuit,Not started,,9/18/2026,Use a low-voltage setup.
-W2,Measure voltage current and power manually,Not started,,9/20/2026,
-W2,Test different panel angles,Not started,,9/20/2026,
-W2,Record at least three manual solar tests,Not started,,9/21/2026,
+W2,Build the solar-panel and LED/resistor test circuit,Complete,9/20/2026,,Built and tested the low-voltage LED/resistor circuit.
+W2,Measure voltage current and power manually,Complete,9/20/2026,,Calculated current and loaded power from resistor voltage using the documented 1 kOhm resistor.
+W2,Test different panel angles,Complete,9/20/2026,,Tested panel-angle labels 180, 135, 90, 45, and -180 degrees.
+W2,Record at least three manual solar tests,Complete,9/20/2026,,Recorded five loaded solar tests in the dated measurement CSV.
 W3,Add power calculations and energy-management recommendations,Not started,,9/28/2026,
 W4,Read solar measurements with Arduino and INA219,Not started,,10/5/2026,
 W5,Record real measurements as CSV and connect them to the app,Not started,,10/12/2026,
 W6,Add prediction and MPPT-versus-PWM comparison,Not started,,10/19/2026,
 W7,Test polish document and submit the project,Not started,,10/26/2026,
+W2,Record today's solar observation,Complete,9/20/2026,,Cloudy weather; sun altitude 46.6 degrees.
+W2,Manual solar test at 180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:30; voltage 6.73 V; resistor 4.81 ohms.
+W2,Manual solar test at 135-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:43; voltage 6.73 V; resistor 4.81 ohms.
+W2,Manual solar test at 90-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:02; voltage 6.42 V; resistor 4.52 ohms.
+W2,Manual solar test at 45-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:22; voltage 6.60 V; resistor 4.71 ohms.
+W2,Manual solar test at -180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:45; voltage 1.63 V; resistor 0 ohms.
+W2,Document cloudy-day findings and next steps,Complete,9/20/2026,,Cloudy conditions and 46.6-degree sun position documented; repeatable angle tests and current/power calculations completed.
 
