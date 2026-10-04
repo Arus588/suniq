@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <rect width="900" height="520" fill="#fff"/>
+  <text x="32" y="42" font-family="Arial" font-size="28" font-weight="bold">INA219 on breadboard — top view</text>
+  <text x="32" y="74" font-family="Arial" font-size="17">Six long header pins point DOWN into column E, rows 10–15.</text>
+  <rect x="90" y="110" width="710" height="350" rx="15" fill="#f4f4f2" stroke="#555" stroke-width="3"/>
+  <g font-family="Arial" font-size="19" fill="#222" text-anchor="middle">
+    <text x="160" y="145">A</text><text x="205" y="145">B</text><text x="250" y="145">C</text><text x="295" y="145">D</text><text x="340" y="145">E</text>
+    <text x="535" y="145">F</text><text x="580" y="145">G</text><text x="625" y="145">H</text><text x="670" y="145">I</text><text x="715" y="145">J</text>
+  </g>
+  <rect x="365" y="160" width="145" height="264" fill="#deded9" stroke="#aaa" stroke-width="2"/>
+  <text x="438" y="446" font-family="Arial" font-size="17" text-anchor="middle">center gap</text>
+  <g fill="#777">
+    <circle cx="160" cy="185" r="5"/><circle cx="205" cy="185" r="5"/><circle cx="250" cy="185" r="5"/><circle cx="295" cy="185" r="5"/>
+    <circle cx="160" cy="227" r="5"/><circle cx="205" cy="227" r="5"/><circle cx="250" cy="227" r="5"/><circle cx="295" cy="227" r="5"/>
+    <circle cx="160" cy="269" r="5"/><circle cx="205" cy="269" r="5"/><circle cx="250" cy="269" r="5"/><circle cx="295" cy="269" r="5"/>
+    <circle cx="160" cy="311" r="5"/><circle cx="205" cy="311" r="5"/><circle cx="250" cy="311" r="5"/><circle cx="295" cy="311" r="5"/>
+    <circle cx="160" cy="353" r="5"/><circle cx="205" cy="353" r="5"/><circle cx="250" cy="353" r="5"/><circle cx="295" cy="353" r="5"/>
+    <circle cx="160" cy="395" r="5"/><circle cx="205" cy="395" r="5"/><circle cx="250" cy="395" r="5"/><circle cx="295" cy="395" r="5"/>
+  </g>
+  <g font-family="Arial" font-size="17" fill="#333" text-anchor="middle">
+    <text x="115" y="191">10</text><text x="115" y="233">11</text><text x="115" y="275">12</text><text x="115" y="317">13</text><text x="115" y="359">14</text><text x="115" y="401">15</text>
+  </g>
+  <rect x="327" y="160" width="125" height="264" rx="8" fill="#25856c" stroke="#145541" stroke-width="3"/>
+  <text x="390" y="280" font-family="Arial" font-size="20" fill="#fff" font-weight="bold" text-anchor="middle" transform="rotate(-90 390 280)">INA219 BOARD</text>
+  <g fill="#f9d66b" stroke="#744c1a" stroke-width="2">
+    <circle cx="340" cy="185" r="10"/><circle cx="340" cy="227" r="10"/><circle cx="340" cy="269" r="10"/><circle cx="340" cy="311" r="10"/><circle cx="340" cy="353" r="10"/><circle cx="340" cy="395" r="10"/>
+  </g>
+  <text x="530" y="205" font-family="Arial" font-size="18" fill="#145541">Board hangs over center gap</text>
+  <path d="M 510 210 L 454 210" stroke="#145541" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0 L10 3 L0 6 Z" fill="#145541"/></marker></defs>
+  <text x="90" y="494" font-family="Arial" font-size="17" fill="#333">The labels on your actual sensor may be in a different order. Read them before connecting wires.</text>
+</svg>

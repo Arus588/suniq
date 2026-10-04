@@ -17,6 +17,7 @@ The measured power path is:
 Panel positive -> INA219 VIN+
 INA219 VIN- -> safe resistor/LED load positive
 Panel negative -> load negative
+Panel negative -> Arduino GND (shared reference for voltage reading)
 ```
 
 Do not connect the panel directly to the Arduino 5V pin. Confirm polarity before powering the circuit.

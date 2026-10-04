@@ -15,6 +15,30 @@ def load_measurements():
         return list(csv.DictReader(csv_file))
 
 
+def load_ina219_sessions():
+    sessions = []
+    for filename, label in (
+        ("ina219-sun-2026-10-04.csv", "Sun facing"),
+        ("ina219-hand-shade-2026-10-04.csv", "Covered by hand"),
+    ):
+        path = DATA_DIR / filename
+        if not path.exists():
+            continue
+        with path.open(newline="", encoding="utf-8-sig") as csv_file:
+            rows = list(csv.DictReader(csv_file))
+        if not rows:
+            continue
+        sessions.append({
+            "label": label,
+            "count": len(rows),
+            "voltage": sum(float(row["bus_voltage_v"]) for row in rows) / len(rows),
+            "current": sum(float(row["current_ma"]) for row in rows) / len(rows),
+            "power": sum(float(row["power_mw"]) for row in rows) / len(rows),
+            "rows": rows,
+        })
+    return sessions
+
+
 
 def simulate(args):
     """Illustrative constant-power model, independent of measured CSV data."""
@@ -59,7 +83,8 @@ def create_app():
 
     @app.get("/")
     def dashboard():
-        return render_template("index.html", measurements=load_measurements(), simulation=simulate(request.args))
+        return render_template("index.html", measurements=load_measurements(),
+                               ina219_sessions=load_ina219_sessions(), simulation=simulate(request.args))
 
     return app
 

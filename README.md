@@ -12,8 +12,8 @@ SunIQ helps small off-grid solar systems use energy wisely by extending useful b
 app.py                 Flask application
 templates/             Dashboard HTML templates
 static/                Dashboard styles and future JavaScript
-firmware/              Arduino code (coming soon)
-data/                  Recorded solar measurements (coming soon)
+firmware/              Arduino sketch and wiring instructions
+data/                  Recorded solar measurements
 ```
 
 ## Run locally

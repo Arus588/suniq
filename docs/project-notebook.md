@@ -374,3 +374,32 @@ These readings do not include measured current, so power should not be calculate
 4. Calculate current with `I = resistor voltage / resistance`, then calculate loaded power with `P = panel voltage * current`.
 5. Add a simple summary chart to the dashboard after the repeat measurements are collected.
 6. Proceed to the planned Arduino/INA219 measurement once the manual test is repeatable.
+
+## October 4, 2026: INA219 sun and hand-shade test
+
+### What I built and tested
+
+- Connected the INA219 to the Elegoo Uno R3 and put its VIN+ / VIN- measurement path in series with the panel, 1 kOhm resistor, and LED load. The panel negative and Arduino GND shared a reference.
+- Confirmed that the sensor printed voltage, current, and power readings about every five seconds in Serial Monitor at 115200 baud.
+- Saved 32 readings with the panel facing the sun in `data/measurements/ina219-sun-2026-10-04.csv` and 15 readings while the panel was covered by hand in `data/measurements/ina219-hand-shade-2026-10-04.csv`.
+- Added both sessions and a power-over-time plot to the dashboard. The data is recorded, not a live Arduino connection.
+
+### Findings
+
+| Condition | Readings | Average bus voltage | Average current | Average sensor power |
+| --- | ---: | ---: | ---: | ---: |
+| Sun facing | 32 | 6.49 V | 4.66 mA | 30.5 mW |
+| Covered by hand | 15 | 3.54 V | 1.68 mA | 6.8 mW |
+
+The sensor's reported average power was about 78% lower during hand shade. One uncovered reading at 670738 ms also dropped to 5.372 V and 20 mW, showing that even the sun session was not perfectly steady. The experiment demonstrates a response to changing light in this circuit; it does not establish daily energy production or battery-life improvement.
+
+### What I learned
+
+- The INA219 can report voltage, current, and power while the panel powers a small LED load. Current and power were no longer inferred only from resistor voltage.
+- Its `timestamp_ms` is time since the Uno started, not the date or wall-clock time. The two CSVs preserve these original timestamps.
+- Covering the panel by hand reduced the measured output, but the amount of shade varied. Repeated tests with a fixed shade method would make the comparison stronger.
+- The multimeter cross-check was intentionally skipped, so sensor accuracy against an independent instrument is not yet confirmed. Battery level was not measured.
+
+### Takeaway and next step
+
+SunIQ now has real sensor evidence that available solar power changes with light conditions. Next, repeat the two conditions with a stable panel position and controlled shade, record the test location and clock time, and compare at least one INA219 voltage reading with the multimeter when convenient.
