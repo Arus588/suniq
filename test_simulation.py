@@ -35,9 +35,23 @@ class SimulationTests(unittest.TestCase):
         response=app.test_client().get('/?sunlight=100&battery=10&hours=2')
         self.assertEqual(response.status_code,200)
         page=response.get_data(as_text=True)
-        for expected in ['Conserve energy','0.06000 Wh','Recorded manual measurements','loaded voltage','6.73']:
+        for expected in ['Conserve energy','0.06000 Wh','Recorded manual measurements']:
             self.assertIn(expected,page)
+        data_page=app.test_client().get('/data').get_data(as_text=True)
+        for expected in ['loaded voltage','6.73']:
+            self.assertIn(expected,data_page)
         self.assertEqual(before,path.read_bytes())
+
+    def test_recorded_data_has_separate_page(self):
+        client = app.test_client()
+        dashboard = client.get('/').get_data(as_text=True)
+        data = client.get('/data')
+        self.assertEqual(data.status_code, 200)
+        self.assertIn('View all recorded data', dashboard)
+        self.assertNotIn('id="sensor-heading"', dashboard)
+        self.assertNotIn('id="tests-heading"', dashboard)
+        self.assertIn('id="sensor-heading"', data.get_data(as_text=True))
+        self.assertIn('id="tests-heading"', data.get_data(as_text=True))
 
     def test_short_term_prediction_uses_only_prior_readings(self):
         result = predict_next_power([2, 4, 6, 8, 10])

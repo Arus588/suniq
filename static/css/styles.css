@@ -32,6 +32,8 @@ body {
 .brand { color: var(--ink); font-size: 1.45rem; font-weight: 800; letter-spacing: -0.08em; text-decoration: none; }
 .brand span { color: var(--accent); }
 .site-header p { color: var(--muted); font-size: .9rem; margin: 0; }
+.site-header nav a { color: var(--accent); font-size: .9rem; font-weight: 650; text-decoration: none; }
+.site-header nav a:hover, .site-header nav a:focus-visible { text-decoration: underline; }
 
 main { padding: 5rem 0; }
 .hero { max-width: 48rem; }
@@ -62,6 +64,11 @@ button.active, button:hover { background: var(--accent); color: #172318; }
 #sensor-power-chart { background: #122016; border-radius: .7rem; margin-top: .8rem; width: 100%; } #sensor-power-chart text { fill: var(--muted); font-size: 12px; }
 .chart-legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .5rem; } .chart-legend span { color: var(--muted); padding-left: .5rem; font-size: .85rem; }
 .plot-controls { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; margin-top: 1rem; } .plot-controls label { display: grid; gap: .35rem; color: var(--muted); font-size: .85rem; } .plot-controls input, .plot-controls select { background: #122016; border: 1px solid #4c783d; border-radius: .4rem; color: var(--ink); font: inherit; padding: .55rem; }
+.photo-story { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; list-style: none; margin: 1.5rem 0 0; padding: 0; }
+.photo-story figure { background: #203020; border: 1px solid #3a4937; border-radius: .8rem; height: 100%; margin: 0; overflow: hidden; }
+.photo-story img { background: #101710; display: block; height: 18rem; object-fit: contain; width: 100%; }
+.photo-story figcaption { color: var(--muted); line-height: 1.5; padding: 1rem; }
+.photo-story figcaption strong { color: var(--ink); }
 .table-scroll { overflow-x: auto; } table { border-collapse: collapse; margin-top: 1rem; min-width: 650px; width: 100%; } th, td { border-bottom: 1px solid #3a4937; padding: .8rem .5rem; text-align: left; } th { color: var(--accent); font-size: .8rem; text-transform: uppercase; } .safety { background: #302c18; border-left: 3px solid var(--accent); margin-top: 1.2rem; padding: 1rem; }
 
 @media (max-width: 38rem) {
@@ -70,6 +77,7 @@ button.active, button:hover { background: var(--accent); color: #172318; }
   .status-card { gap: 1.25rem; margin-top: 3rem; }
   .metrics { grid-template-columns: repeat(2, 1fr); }
   .sensor-metrics { grid-template-columns: 1fr; }
+  .photo-story { grid-template-columns: 1fr; }
   .panel-heading { align-items: flex-start; flex-direction: column; }
 }
 

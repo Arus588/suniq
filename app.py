@@ -160,6 +160,11 @@ def create_app():
                                auto_refresh=request.args.get("live") == "1",
                                simulation=simulate(request.args))
 
+    @app.get("/data")
+    def data_page():
+        return render_template("data.html", measurements=load_measurements(),
+                               ina219_sessions=load_ina219_sessions())
+
     return app
 
 

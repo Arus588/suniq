@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Recorded data | SunIQ{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">SunIQ data</p>
+  <h1>All recorded data</h1>
+  <p class="intro">The manual and INA219 readings used by the dashboard. <a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+</section>
+<section class="dashboard-panel" aria-labelledby="tests-heading">
+  <p class="eyebrow">Measurement log</p><h2 id="tests-heading">Recorded readings</h2>
+  <p class="muted">Times include the UTC offset. Sun and panel positions are user-assigned labels, not measured geometric angles. These separate manual observations are not a continuous energy log.</p>
+  <div class="table-scroll"><table><thead><tr><th>Date / time</th><th>Condition</th><th>Voltage (V)</th><th>Measurement type</th><th>Sun position</th><th>Panel angle (convention)</th></tr></thead><tbody>
+  {% for row in measurements %}<tr><td>{{ row.get('timestamp', '') }}</td><td>{{ row.scenario }}</td><td>{{ row.voltage_v }}</td><td>{{ row.get('measurement_type', 'sample')|replace('_', ' ') }}</td><td>{{ row.get('sun_position') or 'Not recorded' }}{% if row.get('sun_position') %}&deg;{% endif %}</td><td>{{ row.get('panel_angle') or 'Not defined' }}{% if row.get('panel_angle') %}&deg;{% endif %}</td></tr>
+  {% else %}<tr><td colspan="6">No readings recorded yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+
+{% if ina219_sessions %}
+<section class="dashboard-panel" aria-labelledby="sensor-heading">
+  <p class="eyebrow">Real INA219 sensor data</p>
+  <h2 id="sensor-heading">Saved INA219 sessions</h2>
+  <p class="muted">Averages use the sensor's reported readings. Arduino timestamps show milliseconds since startup, not clock time; newer captured sessions also save computer clock time.</p>
+  <div class="metrics sensor-metrics">
+    {% for session in ina219_sessions %}
+    <div class="metric"><span>{{ session.label }} &middot; {{ session.count }} readings</span>
+      <strong>{{ '%.2f'|format(session.voltage) }} V</strong>
+      <span>{{ '%.2f'|format(session.current) }} mA &middot; {{ '%.1f'|format(session.power) }} mW average</span>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="table-scroll"><table><thead><tr><th>Condition</th><th>Clock time</th><th>Time since start (s)</th><th>Voltage (V)</th><th>Current (mA)</th><th>Power (mW)</th></tr></thead><tbody>
+    {% for session in ina219_sessions %}{% for row in session.rows %}
+    <tr><td>{{ session.label }}</td><td>{{ row.get('captured_at') or 'Not recorded' }}</td><td>{{ '%.1f'|format(row.timestamp_ms|float / 1000) }}</td><td>{{ row.bus_voltage_v }}</td><td>{{ row.current_ma }}</td><td>{{ row.power_mw }}</td></tr>
+    {% endfor %}{% endfor %}
+  </tbody></table></div>
+</section>
+{% endif %}
+{% endblock %}
