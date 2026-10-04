@@ -57,8 +57,11 @@ button.active, button:hover { background: var(--accent); color: #172318; }
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; margin-top: 1.5rem; }
 .sensor-metrics { grid-template-columns: repeat(2, 1fr); }
 .metric { background: #203020; border-radius: .8rem; padding: 1rem; } .metric span, .muted, .chart-title span { color: var(--muted); font-size: .85rem; } .metric strong { display:block; font-size: 1.45rem; margin-top: .35rem; }
+.metric small { color: var(--muted); display: block; font-size: .75rem; margin-top: .45rem; }
 .chart-wrap { margin-top: 1.5rem; } .chart-title h3 { margin: 0; } #power-chart { background: #122016; border-radius: .7rem; margin-top: .8rem; width: 100%; } .gridline { stroke: #304630; stroke-width: 1; } .chart-line { fill: none; stroke: var(--accent); stroke-linecap: round; stroke-linejoin: round; stroke-width: 5; } #power-chart text { fill: var(--muted); font-size: 12px; }
 #sensor-power-chart { background: #122016; border-radius: .7rem; margin-top: .8rem; width: 100%; } #sensor-power-chart text { fill: var(--muted); font-size: 12px; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .5rem; } .chart-legend span { color: var(--muted); padding-left: .5rem; font-size: .85rem; }
+.plot-controls { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; margin-top: 1rem; } .plot-controls label { display: grid; gap: .35rem; color: var(--muted); font-size: .85rem; } .plot-controls input, .plot-controls select { background: #122016; border: 1px solid #4c783d; border-radius: .4rem; color: var(--ink); font: inherit; padding: .55rem; }
 .table-scroll { overflow-x: auto; } table { border-collapse: collapse; margin-top: 1rem; min-width: 650px; width: 100%; } th, td { border-bottom: 1px solid #3a4937; padding: .8rem .5rem; text-align: left; } th { color: var(--accent); font-size: .8rem; text-transform: uppercase; } .safety { background: #302c18; border-left: 3px solid var(--accent); margin-top: 1.2rem; padding: 1rem; }
 
 @media (max-width: 38rem) {

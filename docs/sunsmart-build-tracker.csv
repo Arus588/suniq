@@ -19,10 +19,10 @@ W1,Parts list - Digital multimeter,Complete,9/13/2026,9/14/2026,Available
 W1,Parts list - Resistors LEDs and switches,Complete,9/13/2026,9/14/2026,Available
 W1,Parts list - USB cable and 5 V power supply,Complete,9/13/2026,9/14/2026,Available
 W1,Complete the system diagram,Complete,9/13/2026,9/14/2026,Diagram saved under md/assets/.
-W1,Voltage measurement - Set up the panel in sunlight,Not started,,9/14/2026,Hardware measurement setup is still pending.
-W1,Voltage measurement - Set multimeter to DC voltage,Not started,,9/14/2026,Use the correct range and observe polarity.
-W1,Voltage measurement - Measure open-circuit panel voltage,Not started,,9/14/2026,Record the voltage in volts.
-W1,Voltage measurement - Record date weather angle and location,Not started,,9/14/2026,Add conditions to docs/project-notebook.md.
+W1,Voltage measurement - Set up the panel in sunlight,Complete,9/19/2026,,Seven open-circuit readings recorded in sunlight.
+W1,Voltage measurement - Set multimeter to DC voltage,Complete,9/19/2026,,Used the 20 V DC range.
+W1,Voltage measurement - Measure open-circuit panel voltage,Complete,9/19/2026,,Seven readings saved in the September 19 measurement CSV.
+W1,Voltage measurement - Record date weather angle and location,In progress,,10/5/2026,Date weather and user-assigned angle labels recorded; test location was not recorded.
 W2,"Add simulated voltage, current, power, and battery-level data",Complete,2026-09-13,,Added to the Flask dashboard.
 W2,Add a solar-power chart,Complete,2026-09-13,,Added an inline SVG chart using simulated data.
 W2,Add Sunny Cloudy and Shaded controls,Complete,2026-09-13,,Buttons update the dashboard readings and chart.
@@ -30,16 +30,24 @@ W2,Build the solar-panel and LED/resistor test circuit,Complete,9/20/2026,,Built
 W2,Measure voltage current and power manually,Complete,9/20/2026,,Calculated current and loaded power from resistor voltage using the documented 1 kOhm resistor.
 W2,Test different panel angles,Complete,9/20/2026,,Tested panel-angle labels 180, 135, 90, 45, and -180 degrees.
 W2,Record at least three manual solar tests,Complete,9/20/2026,,Recorded five loaded solar tests in the dated measurement CSV.
-W3,Add power calculations and energy-management recommendations,Not started,,9/28/2026,
-W4,Read solar measurements with Arduino and INA219,Not started,,10/5/2026,
-W5,Record real measurements as CSV and connect them to the app,Not started,,10/12/2026,
-W6,Add prediction and MPPT-versus-PWM comparison,Not started,,10/19/2026,
+W3,Add power calculations and energy-management recommendations,Complete,9/20/2026,,Illustrative power and energy calculations and recommendation rules added; four automated tests pass.
+W4,Read solar measurements with Arduino and INA219,Complete,10/4/2026,,Serial Monitor showed voltage current and power about every five seconds under sun and hand shade.
+W4,Keep panel position fixed during sun and hand-shade test,Complete,10/4/2026,,User confirmed panel stayed in the same position while only hand shade changed.
+W5,Record real measurements as CSV and connect them to the app,Complete,10/4/2026,,Two INA219 CSV sessions display in the dashboard with averages power plot and full reading table.
+W4,Compare INA219 voltage with the multimeter,Not started,,10/8/2026,Skipped during the October 4 session; needed for independent sensor check.
+W4,Record a third repeatable sensor test session,Not started,,10/8/2026,Optional later repeat with consistent shade and recorded clock time and location; the October 4 panel position was fixed.
+W5,Automatically import captured INA219 CSV sessions,Complete,10/4/2026,,New capture files are discovered on dashboard refresh; a 20-reading hardware capture was saved. Its sun label and low readings need condition review.
+W5,Show last capture time and filter sensor plot by clock time,Complete,10/4/2026,,Dashboard shows last captured_at and supports all sessions last 5 or 15 minutes last hour and custom From/To range.
+W5,Add arbitrary CSV upload,Not started,,10/12/2026,Optional; current automatic import supports the INA219 capture file format.
+W6,Add prediction and MPPT-versus-PWM comparison,In progress,,10/19/2026,Five-second power prediction is complete; MPPT-versus-PWM comparison remains.
+W6,Add five-second power prediction and measure error,Complete,10/4/2026,,Three-reading average predicts the next reading separately for sun and hand shade; dashboard shows backtest mean absolute error.
+W6,Add MPPT-versus-PWM comparison,Not started,,10/19/2026,Use a clearly labeled conceptual or simulated comparison unless measured hardware data is available.
 W7,Test polish document and submit the project,Not started,,10/26/2026,
 W2,Record today's solar observation,Complete,9/20/2026,,Cloudy weather; sun altitude 46.6 degrees.
-W2,Manual solar test at 180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:30; voltage 6.73 V; resistor 4.81 ohms.
-W2,Manual solar test at 135-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:43; voltage 6.73 V; resistor 4.81 ohms.
-W2,Manual solar test at 90-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:02; voltage 6.42 V; resistor 4.52 ohms.
-W2,Manual solar test at 45-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:22; voltage 6.60 V; resistor 4.71 ohms.
-W2,Manual solar test at -180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:45; voltage 1.63 V; resistor 0 ohms.
-W2,Document cloudy-day findings and next steps,Complete,9/20/2026,,Cloudy conditions and 46.6-degree sun position documented; repeatable angle tests and current/power calculations completed.
+W2,Manual solar test at 180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:30; panel voltage 6.73 V; resistor voltage 4.81 V.
+W2,Manual solar test at 135-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:53:43; panel voltage 6.73 V; resistor voltage 4.81 V.
+W2,Manual solar test at 90-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:02; panel voltage 6.42 V; resistor voltage 4.52 V.
+W2,Manual solar test at 45-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:22; panel voltage 6.60 V; resistor voltage 4.71 V.
+W2,Manual solar test at -180-degree panel angle,Complete,9/20/2026,,Recorded 2026-09-20 11:54:45; panel voltage 1.63 V; resistor voltage 0 V.
+W2,Document cloudy-day findings and next steps,Complete,9/20/2026,,Cloudy conditions and 46.6-degree sun position documented; current and power calculated from the 1 kOhm resistor. Repeatable angle tests remain to be done.
 

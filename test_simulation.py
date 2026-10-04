@@ -1,6 +1,7 @@
 ﻿import unittest
 from pathlib import Path
 from app import app, simulate
+from prediction import predict_next_power
 
 class SimulationTests(unittest.TestCase):
     def test_power_and_energy(self):
@@ -37,5 +38,14 @@ class SimulationTests(unittest.TestCase):
         for expected in ['Conserve energy','0.06000 Wh','Recorded manual measurements','loaded voltage','6.73']:
             self.assertIn(expected,page)
         self.assertEqual(before,path.read_bytes())
+
+    def test_short_term_prediction_uses_only_prior_readings(self):
+        result = predict_next_power([2, 4, 6, 8, 10])
+        self.assertEqual(result['history_mw'], [None, None, None, 4, 6])
+        self.assertEqual(result['next_mw'], 8)
+        self.assertEqual(result['mae_mw'], 4)
+        self.assertEqual(result['evaluated_count'], 2)
+        self.assertIsNone(predict_next_power([2, 4]))
+        self.assertIsNone(predict_next_power([2, 4, 6])['mae_mw'])
 
 if __name__=='__main__': unittest.main()

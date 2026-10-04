@@ -382,6 +382,7 @@ These readings do not include measured current, so power should not be calculate
 - Connected the INA219 to the Elegoo Uno R3 and put its VIN+ / VIN- measurement path in series with the panel, 1 kOhm resistor, and LED load. The panel negative and Arduino GND shared a reference.
 - Confirmed that the sensor printed voltage, current, and power readings about every five seconds in Serial Monitor at 115200 baud.
 - Saved 32 readings with the panel facing the sun in `data/measurements/ina219-sun-2026-10-04.csv` and 15 readings while the panel was covered by hand in `data/measurements/ina219-hand-shade-2026-10-04.csv`.
+- Kept the panel in the same fixed position for both conditions; only the hand shade changed.
 - Added both sessions and a power-over-time plot to the dashboard. The data is recorded, not a live Arduino connection.
 
 ### Findings
@@ -402,4 +403,27 @@ The sensor's reported average power was about 78% lower during hand shade. One u
 
 ### Takeaway and next step
 
-SunIQ now has real sensor evidence that available solar power changes with light conditions. Next, repeat the two conditions with a stable panel position and controlled shade, record the test location and clock time, and compare at least one INA219 voltage reading with the multimeter when convenient.
+SunIQ now has real sensor evidence that available solar power changes with light conditions while panel position stays fixed. The first prediction built from these readings is documented below. A later repeat can use a more consistent shade method and record the test location and clock time.
+
+## October 4, 2026: first short-term power prediction
+
+- Added a one-reading-ahead prediction for each INA219 condition. It averages the previous three sensor-reported power readings to estimate the next reading, approximately five seconds later.
+- Tested each earlier prediction only against the subsequent actual reading in the same condition. This avoids using future readings to make a past prediction.
+- Sun-facing prediction from the last three readings: 32.0 mW. Mean absolute error over 29 earlier checks: 1.56 mW.
+- Hand-shade prediction from the last three readings: 4.67 mW. Mean absolute error over 12 earlier checks: 3.0 mW.
+- The dashboard shows the next estimate for each condition and dashed prediction lines alongside the recorded power plot.
+- This assumes similar lighting continues for another five seconds. The hand shade varied substantially, so its prediction error is larger. These short sessions do not support a reliable multi-hour or daily energy forecast yet.
+
+### Automatic capture and refresh
+
+- Added `capture_ina219.py` to read the Uno's 115200-baud serial output and save every valid five-column INA219 reading to a new dated CSV. It ignores the startup header and unreadable lines and saves a computer clock timestamp alongside the Arduino millisecond count.
+- The dashboard discovers new `ina219-capture-*.csv` sessions automatically and recalculates each session's three-reading prediction on page load. The `?live=1` dashboard view refreshes every ten seconds while a capture is running.
+- Arduino IDE Serial Monitor must be closed before the capture script opens the USB port. The capture script passed a simulated serial test; a subsequent real capture is recorded below.
+
+### Capture timestamps and plot history
+
+- A real capture file, `data/measurements/ina219-capture-20261004-150043-437601.csv`, now contains 20 readings. Each row records both the computer's local `captured_at` clock time with UTC offset and the Arduino's `timestamp_ms` since startup. The final saved reading is stamped 2026-10-04 15:02:20 PDT.
+- This capture is labeled sun but shows about 1.5 V and near-zero current. The actual light and wiring conditions for that run were not confirmed, so it should not be treated as a validated sun-versus-shade result.
+- A second 20-reading file, `data/measurements/ina219-capture-20261004-150805-349303.csv`, was also saved, ending at 15:09:42 PDT. Its sun label was user-entered; the electrical readings vary and the test conditions have not been independently documented, so retain it as raw data rather than a confirmed sunlight result.
+- Added the last saved capture time to the dashboard and each clock-stamped session card. The plot can show all sessions, the last 5 or 15 minutes, the last hour, or a custom From/To clock-time range. Recent ranges end at the latest saved reading, so older sessions can still be reviewed.
+- The two earlier pasted INA219 sessions lack wall-clock timestamps. They remain visible under All sessions and are excluded from clock-time filters rather than inventing times.

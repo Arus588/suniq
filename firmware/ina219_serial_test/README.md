@@ -31,3 +31,5 @@ Do not connect the panel directly to the Arduino 5V pin. Confirm polarity before
 5. Open Serial Monitor at **115200 baud**.
 6. Confirm that CSV rows appear every five seconds.
 7. Compare bus voltage with the multimeter under the same lighting and load.
+
+To save new readings automatically for the dashboard, close Serial Monitor and follow the capture instructions in the project root `README.md`. The Python capture program uses the same USB port at 115200 baud.

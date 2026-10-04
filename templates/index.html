@@ -10,23 +10,56 @@
 
 {% if ina219_sessions %}
 <section class="dashboard-panel" aria-labelledby="latest-sensor-heading">
-  <p class="eyebrow">Latest recorded sensor sessions</p>
-  <h2 id="latest-sensor-heading">Sun facing and covered by hand</h2>
-  <p class="muted">October 4, 2026 averages from the INA219. These are recorded tests, not live readings. Battery was not measured. <a href="#sensor-heading">See every reading</a>.</p>
+  <p class="eyebrow">Recorded sensor sessions</p>
+  <h2 id="latest-sensor-heading">INA219 measurements</h2>
+  <p class="muted">Last data captured: <strong>{{ latest_capture.isoformat(sep=' ', timespec='seconds') if latest_capture else 'No clock-stamped capture yet' }}</strong>. New readings appear when the dashboard refreshes. Battery was not measured. <a href="#sensor-heading">See every reading</a>. {% if auto_refresh %}<a href="{{ url_for('dashboard', lookback=lookback, start=range_start, end=range_end) }}">Stop auto-refresh</a> (every 10 seconds).{% else %}<a href="{{ url_for('dashboard', live=1, lookback=lookback, start=range_start, end=range_end) }}">Auto-refresh every 10 seconds</a>.{% endif %}</p>
   <div class="metrics sensor-metrics">
     {% for session in ina219_sessions %}
     <div class="metric"><span>{{ session.label }} &middot; {{ session.count }} readings</span>
       <strong>{{ '%.2f'|format(session.voltage) }} V</strong>
       <span>{{ '%.2f'|format(session.current) }} mA &middot; {{ '%.1f'|format(session.power) }} mW</span>
+      {% if session.last_captured_at %}<small>Last captured: {{ session.last_captured_at }}</small>{% endif %}
     </div>
     {% endfor %}
   </div>
   <div class="chart-wrap">
-    <div class="chart-title"><h3>Measured power over time</h3><span>Yellow: sun facing &middot; Green: covered by hand</span></div>
-    <svg id="sensor-power-chart" viewBox="0 0 700 240" role="img" aria-label="Power readings in milliwatts over time, showing sun facing followed by hand shade"></svg>
+    <div class="chart-title"><h3>Power by reading</h3><span>Solid: measured &middot; Dashed: prediction</span></div>
+    <form class="plot-controls" method="get" action="/" aria-label="Choose plot time range">
+      {% if auto_refresh %}<input type="hidden" name="live" value="1">{% endif %}
+      <label>Show readings
+        <select name="lookback" id="plot-lookback">
+          <option value="all" {% if lookback == 'all' %}selected{% endif %}>All sessions</option>
+          <option value="5m" {% if lookback == '5m' %}selected{% endif %}>Last 5 minutes</option>
+          <option value="15m" {% if lookback == '15m' %}selected{% endif %}>Last 15 minutes</option>
+          <option value="1h" {% if lookback == '1h' %}selected{% endif %}>Last hour</option>
+          <option value="custom" {% if lookback == 'custom' %}selected{% endif %}>Custom time</option>
+        </select>
+      </label>
+      <label>From <input type="datetime-local" name="start" value="{{ range_start }}"></label>
+      <label>To <input type="datetime-local" name="end" value="{{ range_end }}"></label>
+      <button type="submit">Show plot</button>
+    </form>
+    <p class="muted">Time ranges end at the last captured reading. Older pasted sessions have no clock time and appear only under “All sessions.”</p>
+    {% if plot_sessions %}
+    <svg id="sensor-power-chart" viewBox="0 0 700 240" role="img" aria-label="Measured and predicted power in milliwatts by reading, grouped by sensor session"></svg>
+    <div id="sensor-legend" class="chart-legend" aria-label="Sensor session colors"></div>
+    {% else %}<p class="muted">No clock-stamped readings in this time range.</p>{% endif %}
   </div>
-  <div class="finding"><h3>Finding and takeaway</h3>
+  <div class="finding"><h3>October 4 finding and takeaway</h3>
     <p>Average measured power fell from 30.5 mW in the sun-facing test to 6.8 mW while covered by hand. I learned that the sensor can show how available solar power changes with light. These are two short tests.</p>
+  </div>
+</section>
+<section class="dashboard-panel" aria-labelledby="prediction-heading">
+  <p class="eyebrow">First prediction</p>
+  <h2 id="prediction-heading">Estimated next power reading</h2>
+  <p class="muted">For each session, SunIQ averages its last three power readings to estimate the next reading about five seconds later, assuming the lighting stays similar. It checks earlier estimates against the following actual readings. This is a short-term demonstration, not a forecast for the day.</p>
+  <div class="metrics sensor-metrics">
+    {% for session in ina219_sessions if session.prediction %}
+    <div class="metric"><span>{{ session.label }}</span>
+      <strong>{{ '%.1f'|format(session.prediction.next_mw) }} mW</strong>
+      <span>Next reading estimate &middot; average error {{ '%.1f'|format(session.prediction.mae_mw) if session.prediction.mae_mw is not none else 'Not enough data' }}{% if session.prediction.mae_mw is not none %} mW{% endif %} across {{ session.prediction.evaluated_count }} checks</span>
+    </div>
+    {% endfor %}
   </div>
 </section>
 {% endif %}
@@ -66,8 +99,8 @@
 {% if ina219_sessions %}
 <section class="dashboard-panel" aria-labelledby="sensor-heading">
   <p class="eyebrow">Real INA219 sensor data</p>
-  <h2 id="sensor-heading">Sunlight and hand shade</h2>
-  <p class="muted">Recorded October 4, 2026, about every five seconds. Averages use the sensor's reported readings. Arduino timestamps show milliseconds since startup, not clock time. Multimeter comparison was skipped.</p>
+  <h2 id="sensor-heading">Saved INA219 sessions</h2>
+  <p class="muted">Averages use the sensor's reported readings. Arduino timestamps show milliseconds since startup, not clock time; newer captured sessions also save computer clock time.</p>
   <div class="metrics sensor-metrics">
     {% for session in ina219_sessions %}
     <div class="metric"><span>{{ session.label }} &middot; {{ session.count }} readings</span>
@@ -76,9 +109,9 @@
     </div>
     {% endfor %}
   </div>
-  <div class="table-scroll"><table><thead><tr><th>Condition</th><th>Time since start (s)</th><th>Voltage (V)</th><th>Current (mA)</th><th>Power (mW)</th></tr></thead><tbody>
+  <div class="table-scroll"><table><thead><tr><th>Condition</th><th>Clock time</th><th>Time since start (s)</th><th>Voltage (V)</th><th>Current (mA)</th><th>Power (mW)</th></tr></thead><tbody>
     {% for session in ina219_sessions %}{% for row in session.rows %}
-    <tr><td>{{ session.label }}</td><td>{{ '%.1f'|format(row.timestamp_ms|float / 1000) }}</td><td>{{ row.bus_voltage_v }}</td><td>{{ row.current_ma }}</td><td>{{ row.power_mw }}</td></tr>
+    <tr><td>{{ session.label }}</td><td>{{ row.get('captured_at') or 'Not recorded' }}</td><td>{{ '%.1f'|format(row.timestamp_ms|float / 1000) }}</td><td>{{ row.bus_voltage_v }}</td><td>{{ row.current_ma }}</td><td>{{ row.power_mw }}</td></tr>
     {% endfor %}{% endfor %}
   </tbody></table></div>
 </section>
@@ -112,29 +145,38 @@
 </section>
 <script>
 {% if ina219_sessions %}
-const sensorSessions = {{ ina219_sessions | tojson }};
+const sensorSessions = {{ plot_sessions | tojson }};
 (function drawSensorPower() {
   const svg = document.querySelector('#sensor-power-chart');
-  const rows = sensorSessions.flatMap(session => session.rows.map(row => ({
-    time: Number(row.timestamp_ms), power: Number(row.power_mw), label: session.label
-  })));
-  if (!svg || !rows.length) return;
-  const first = rows[0].time, last = rows[rows.length - 1].time;
-  const maxPower = Math.max(40, ...rows.map(row => row.power));
-  const x = time => 50 + (time - first) / Math.max(1, last - first) * 600;
+  const total = sensorSessions.reduce((count, session) => count + session.rows.length, 0);
+  if (!svg || !total) return;
+  const maxPower = Math.max(40, ...sensorSessions.flatMap(session => session.rows.map(row => Number(row.power_mw))));
+  const x = index => 50 + index / Math.max(1, total - 1) * 600;
   const y = power => 190 - power / maxPower * 150;
-  const colors = ['var(--accent)', 'var(--green)'];
-  const shadeStart = sensorSessions[1]?.rows[0]?.timestamp_ms;
-  const splitX = shadeStart === undefined ? null : x(Number(shadeStart));
-  const paths = sensorSessions.map((session, index) => {
-    const points = session.rows.map(row => `${x(Number(row.timestamp_ms)).toFixed(1)} ${y(Number(row.power_mw)).toFixed(1)}`);
-    return `<path d="M ${points.join(' L ')}" fill="none" stroke="${colors[index % colors.length]}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const colors = ['#e7c84d', '#86d477', '#78baf0', '#f2a97b', '#d2a1f5'];
+  let offset = 0;
+  const paths = [], dividers = [];
+  const legend = document.querySelector('#sensor-legend');
+  sensorSessions.forEach((session, sessionIndex) => {
+    const color = colors[sessionIndex % colors.length];
+    const points = session.rows.map((row, rowIndex) => `${x(offset + rowIndex).toFixed(1)} ${y(Number(row.power_mw)).toFixed(1)}`);
+    paths.push(`<path d="M ${points.join(' L ')}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`);
+    const predicted = session.rows.map((row, rowIndex) =>
+      row.predicted_mw === null ? null : `${x(offset + rowIndex).toFixed(1)} ${y(Number(row.predicted_mw)).toFixed(1)}`
+    ).filter(Boolean);
+    if (predicted.length) paths.push(`<path d="M ${predicted.join(' L ')}" fill="none" stroke="${color}" stroke-width="2" stroke-dasharray="6 5"/>`);
+    if (offset) dividers.push(`<path d="M${x(offset - 0.5).toFixed(1)} 40V190" stroke="var(--muted)" stroke-width="1" stroke-dasharray="5 5"/>`);
+    const item = document.createElement('span');
+    item.textContent = session.label;
+    item.style.borderLeft = `4px solid ${color}`;
+    legend.append(item);
+    offset += session.rows.length;
   });
-  const split = splitX === null ? '' : `<path d="M${splitX.toFixed(1)} 40V190" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/>`;
-  const sunLabelX = splitX === null ? 100 : Math.max(60, (50 + splitX) / 2 - 38);
-  const shadeLabelX = splitX === null ? 500 : Math.min(525, (splitX + 650) / 2 - 55);
-  svg.innerHTML = `<path class="gridline" d="M50 40H650 M50 115H650 M50 190H650"/>${split}${paths.join('')}<text x="${sunLabelX.toFixed(1)}" y="32" fill="var(--accent)">Sun facing</text>${splitX === null ? '' : `<text x="${shadeLabelX.toFixed(1)}" y="32" fill="var(--green)">Covered by hand</text>`}<text x="7" y="44">${maxPower} mW</text><text x="18" y="194">0</text><text x="50" y="225">0 s</text><text x="590" y="225">${((last-first)/1000).toFixed(0)} s</text>`;
+  svg.innerHTML = `<path class="gridline" d="M50 40H650 M50 115H650 M50 190H650"/>${dividers.join('')}${paths.join('')}<text x="7" y="44">${maxPower} mW</text><text x="18" y="194">0</text><text x="50" y="225">First reading</text><text x="570" y="225">Last reading</text>`;
 })();
+{% endif %}
+{% if auto_refresh %}
+setTimeout(() => window.location.reload(), 10000);
 {% endif %}
 const measurements = {{ measurements | tojson }};
 const numeric = value => value == null || String(value).trim() === '' || !Number.isFinite(Number(value)) ? null : Number(value);
