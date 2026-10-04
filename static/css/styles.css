@@ -33,6 +33,7 @@ body {
 .brand span { color: var(--accent); }
 .site-header p { color: var(--muted); font-size: .9rem; margin: 0; }
 .site-header nav a { color: var(--accent); font-size: .9rem; font-weight: 650; text-decoration: none; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
 .site-header nav a:hover, .site-header nav a:focus-visible { text-decoration: underline; }
 
 main { padding: 5rem 0; }
@@ -51,6 +52,13 @@ h2 { font-size: 1.35rem; margin: 0 0 .6rem; }
 .creator p:last-child { color: var(--muted); line-height: 1.65; margin: 0; }
 .dashboard-panel { background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid #3a4937; border-radius: 1.25rem; margin-top: 2rem; padding: 2rem; }
 .dashboard-panel a { color: var(--accent); }
+.simple-flow { align-items: stretch; display: flex; gap: .75rem; margin-top: 1.25rem; }
+.simple-flow > div { background: #203020; border: 1px solid #3a4937; border-radius: .8rem; flex: 1; padding: 1rem; }
+.flow-icon { display: block; height: 4rem; margin-bottom: .75rem; width: 5rem; }
+.simple-flow strong, .simple-flow span:not(.flow-arrow) { display: block; }
+.simple-flow div span { color: var(--muted); font-size: .9rem; line-height: 1.4; margin-top: .4rem; }
+.flow-arrow { align-self: center; color: var(--accent); font-size: 1.5rem; }
+.flow-note { line-height: 1.5; margin: 1rem 0 0; }
 .finding { border-left: 3px solid var(--green); background: #203020; margin-top: 1.5rem; padding: .8rem 1rem; } .finding h3 { margin: 0 0 .4rem; } .finding p { color: var(--muted); line-height: 1.5; margin: 0; }
 .panel-heading, .chart-title { align-items: center; display: flex; justify-content: space-between; gap: 1rem; }
 .scenario-buttons { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -72,6 +80,8 @@ button.active, button:hover { background: var(--accent); color: #172318; }
 .table-scroll { overflow-x: auto; } table { border-collapse: collapse; margin-top: 1rem; min-width: 650px; width: 100%; } th, td { border-bottom: 1px solid #3a4937; padding: .8rem .5rem; text-align: left; } th { color: var(--accent); font-size: .8rem; text-transform: uppercase; } .safety { background: #302c18; border-left: 3px solid var(--accent); margin-top: 1.2rem; padding: 1rem; }
 
 @media (max-width: 38rem) {
+  .simple-flow { align-items: stretch; flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
   .site-header, .status-card { align-items: flex-start; flex-direction: column; }
   main { padding: 3rem 0; }
   .status-card { gap: 1.25rem; margin-top: 3rem; }

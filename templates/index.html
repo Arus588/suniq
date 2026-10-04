@@ -2,10 +2,31 @@
 
 {% block content %}
 <section class="hero">
-  <p class="eyebrow">Solar energy, made clearer</p>
+  <p class="eyebrow">Understand your solar power</p>
   <h1>Make smarter choices with every ray of sunlight.</h1>
-  <p class="headline">SunIQ helps small off-grid solar systems use energy wisely by extending useful battery operating time.</p>
-  <p class="intro">SunIQ tracks solar measurements, predicts available energy, and recommends when to run a load, conserve power, or charge a battery.</p>
+  <p class="headline">SunIQ tracks solar measurements, predicts available energy, and recommends when to run a load, conserve power, or charge a battery.</p>
+</section>
+
+<section class="dashboard-panel" aria-labelledby="how-it-works-heading">
+  <p class="eyebrow">How SunIQ works today</p>
+  <h2 id="how-it-works-heading">From sunlight to a reading</h2>
+  <div class="simple-flow" aria-label="Solar panel to sensor and Arduino to dashboard">
+    <div>
+      <svg class="flow-icon" viewBox="0 0 80 64" role="img" aria-label="Sun shining on a solar panel"><circle cx="62" cy="13" r="8" fill="#e7c84d"/><path d="M9 29h50l-7 25H16z" fill="#244c68" stroke="#86d477" stroke-width="2"/><path d="M22 29l-3 25m17-25v25m13-25l4 25M12 42h44" stroke="#86d477" stroke-width="1.5"/></svg>
+      <strong>Solar panel</strong><span>Makes electricity from sunlight</span>
+    </div>
+    <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+    <div>
+      <svg class="flow-icon" viewBox="0 0 80 64" role="img" aria-label="Sensor circuit board connected to an Arduino board"><rect x="4" y="18" width="28" height="28" rx="3" fill="#315b36" stroke="#86d477" stroke-width="2"/><rect x="12" y="26" width="12" height="12" fill="#172318"/><path d="M32 32h12" stroke="#e7c84d" stroke-width="3"/><rect x="44" y="10" width="32" height="44" rx="4" fill="#247286" stroke="#78baf0" stroke-width="2"/><rect x="52" y="21" width="16" height="15" rx="2" fill="#172318"/><path d="M49 45h22" stroke="#e7c84d" stroke-width="2"/></svg>
+      <strong>Sensor + Arduino</strong><span>Measure the panel's power</span>
+    </div>
+    <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+    <div>
+      <svg class="flow-icon" viewBox="0 0 80 64" role="img" aria-label="Dashboard chart with measured and predicted power"><rect x="5" y="7" width="70" height="48" rx="4" fill="#122016" stroke="#86d477" stroke-width="2"/><path d="M12 43l14-9 13 4 13-17 15 5" fill="none" stroke="#e7c84d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M67 26l5-7" stroke="#e7c84d" stroke-width="2" stroke-dasharray="3 2"/><path d="M30 60h20" stroke="#86d477" stroke-width="3"/></svg>
+      <strong>SunIQ dashboard</strong><span>Shows readings and the next estimate</span>
+    </div>
+  </div>
+  <p class="muted flow-note"><strong>Future goal:</strong> Add battery and home energy data to suggest when to charge or use power.</p>
 </section>
 
 {% if ina219_sessions %}
