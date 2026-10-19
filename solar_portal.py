@@ -10,6 +10,8 @@ from datetime import datetime, timedelta, timezone
 from functools import wraps
 from pathlib import Path
 
+from werkzeug.security import check_password_hash
+
 from flask import Blueprint, abort, current_app, flash, g, redirect, render_template, request, session, url_for
 
 PROVIDERS = {
@@ -62,6 +64,8 @@ def init_portal(app, test_config=None):
         MAX_CONTENT_LENGTH=2 * 1024 * 1024,
         DATABASE=str(Path(app.instance_path) / 'suniq.sqlite3'),
         PRESENTATION_LOGIN_ENABLED=(not production and os.getenv('SUNIQ_PRESENTATION_LOGIN','').lower()=='true'),
+        ACCOUNT_EMAIL=os.getenv('SUNIQ_ACCOUNT_EMAIL', '').strip().casefold(),
+        ACCOUNT_PASSWORD_HASH=os.getenv('SUNIQ_ACCOUNT_PASSWORD_HASH', ''),
         GOOGLE_CLIENT_ID=os.getenv('GOOGLE_CLIENT_ID'),
         GOOGLE_CLIENT_SECRET=os.getenv('GOOGLE_CLIENT_SECRET'),
         GOOGLE_REDIRECT_URI=os.getenv('GOOGLE_REDIRECT_URI', 'http://127.0.0.1:5000/auth/google/callback'),
@@ -128,7 +132,7 @@ def privacy():
 def signin():
     if g.user:
         return redirect(url_for('portal.workspace'))
-    if session.get('demo_profile') and current_app.config['PRESENTATION_LOGIN_ENABLED']:
+    if session.get('demo_profile') and (session.get('password_authenticated') or current_app.config['PRESENTATION_LOGIN_ENABLED']):
         return redirect(url_for('portal.planner') if session.get('demo_system') else url_for('portal.demo_setup'))
     ready = bool(current_app.config['GOOGLE_CLIENT_ID'] and current_app.config['GOOGLE_CLIENT_SECRET'])
     return render_template('signin.html', mode='register' if request.args.get('mode')=='register' else 'login')
@@ -294,7 +298,7 @@ def demo():
 
 @portal.post('/demo/signin')
 def demo_signin():
-    if not current_app.config['PRESENTATION_LOGIN_ENABLED']:
+    if not current_app.config['PRESENTATION_LOGIN_ENABLED'] or current_app.config['ACCOUNT_PASSWORD_HASH']:
         abort(404)
     email=request.form.get('email','').strip().casefold()
     if email!='arushbhingare2010@gmail.com':
@@ -308,7 +312,7 @@ def demo_signin():
 
 @portal.route('/demo/setup', methods=['GET', 'POST'])
 def demo_setup():
-    if not current_app.config['PRESENTATION_LOGIN_ENABLED'] or not session.get('demo_profile'):
+    if not session.get('demo_profile') or not (session.get('password_authenticated') or current_app.config['PRESENTATION_LOGIN_ENABLED']):
         return redirect(url_for('portal.signin'))
     system = session.get('demo_system', {})
     if request.method == 'POST':
@@ -326,6 +330,7 @@ def demo_setup():
 
 @portal.post('/demo/signout')
 def demo_signout():
+    session.pop('password_authenticated', None)
     session.pop('demo_profile', None)
     session.pop('display_name',None)
     session.pop('presentation_email',None)
@@ -435,6 +440,21 @@ def access_request():
     if not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',email) or len(email)>254 or not password or len(password)>256 or (mode=='register' and (not name or len(name)>80)):
         flash('Enter a valid email, password, and your name when registering.','error')
         return redirect(url_for('portal.signin',mode=mode))
+    password_hash = current_app.config['ACCOUNT_PASSWORD_HASH']
+    if password_hash and email == current_app.config['ACCOUNT_EMAIL']:
+        if mode != 'login' or not check_password_hash(password_hash, password):
+            flash('Email or password is incorrect.', 'error')
+            return redirect(url_for('portal.signin'))
+        session.clear()
+        session.permanent = True
+        session['password_authenticated'] = True
+        session['display_name'] = 'Arush B'
+        session['presentation_email'] = email
+        session['demo_profile'] = True
+        return redirect(url_for('portal.demo_setup'))
+    if password_hash and mode == 'login':
+        flash('Email or password is incorrect.', 'error')
+        return redirect(url_for('portal.signin'))
     if email=='arushbhingare2010@gmail.com' and current_app.config['PRESENTATION_LOGIN_ENABLED']:
         session.clear()
         session['display_name']='Arush B'

@@ -15,7 +15,8 @@ class PortalTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.path = str(Path(self.temp.name) / 'accounts.sqlite3')
         self.app = create_app({'TESTING': True, 'SECRET_KEY': 'test-secret', 'DATABASE': self.path,
-                               'GOOGLE_CLIENT_ID': None, 'GOOGLE_CLIENT_SECRET': None, 'PRESENTATION_LOGIN_ENABLED':True})
+                               'GOOGLE_CLIENT_ID': None, 'GOOGLE_CLIENT_SECRET': None, 'PRESENTATION_LOGIN_ENABLED':True,
+                               'ACCOUNT_EMAIL': '', 'ACCOUNT_PASSWORD_HASH': ''})
         with closing(sqlite3.connect(self.path)) as connection:
             connection.executemany('INSERT INTO users(id,google_sub,email,name) VALUES(?,?,?,?)',
                                   [(1,'one','one@example.com','One'),(2,'two','two@example.com','Two')])
@@ -44,6 +45,36 @@ class PortalTests(unittest.TestCase):
         self.assertEqual(self.client.post('/demo/signin',data={'csrf_token':'test-csrf'}).status_code,400)
         with self.client.session_transaction() as state:state['csrf']='test-csrf'
         self.assertEqual(self.client.post('/demo/signin',data={'csrf_token':'test-csrf','email':'arushbhingare2010@gmail.com'}).status_code,404)
+
+    def test_password_account_with_presentation_disabled(self):
+        from werkzeug.security import generate_password_hash
+        self.app.config.update(PRESENTATION_LOGIN_ENABLED=False,
+                               ACCOUNT_EMAIL='arushbhingare2010@gmail.com',
+                               ACCOUNT_PASSWORD_HASH=generate_password_hash('test-password'))
+        for email, password, mode in [('arushbhingare2010@gmail.com', 'wrong', 'login'),
+                                      ('other@example.com', 'test-password', 'login'),
+                                      ('arushbhingare2010@gmail.com', 'test-password', 'register')]:
+            self.client.get('/signin')
+            with self.client.session_transaction() as state:
+                csrf = state['csrf']
+            response = self.client.post('/access', data=dict(csrf_token=csrf, email=email,
+                                        password=password, mode=mode, name='Arush'))
+            self.assertEqual(response.location, '/signin')
+            with self.client.session_transaction() as state:
+                self.assertNotIn('password_authenticated', state)
+        response = self.client.post('/access', data=dict(csrf_token=csrf,
+                     email='ARUSHBHINGARE2010@gmail.com', password='test-password', mode='login'))
+        self.assertEqual(response.location, '/demo/setup')
+        self.assertEqual(self.client.get('/demo/setup').status_code, 200)
+        self.assertEqual(self.client.get('/signin').location, '/demo/setup')
+        with self.client.session_transaction() as state:
+            self.assertTrue(state['password_authenticated'])
+            self.assertNotIn('user_id', state)
+            csrf = state['csrf']
+        self.assertEqual(self.client.post('/demo/signin', data=dict(csrf_token=csrf,
+                         email='arushbhingare2010@gmail.com')).status_code, 404)
+        self.client.post('/demo/signout', data=dict(csrf_token=csrf))
+        self.assertEqual(self.client.get('/demo/setup').location, '/signin')
 
     def test_default_page_and_logout(self):
         self.assertEqual(self.client.get('/').location, '/signin')
