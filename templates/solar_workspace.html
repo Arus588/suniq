@@ -1,0 +1,22 @@
+﻿{% extends "base.html" %}
+{% block title %}My solar · SunIQ{% endblock %}
+{% block content %}
+<section class="hero"><p class="eyebrow">{{ current_user.name }}'s workspace</p><h1>{{ system.name }}</h1><p class="headline">{{ provider_name }} <span class="status-badge">{{ 'CSV data imported' if latest else 'Awaiting data' }}</span></p></section>
+<section class="dashboard-panel"><div class="panel-heading"><div><h2>Your energy at a glance</h2><p class="muted">{{ 'Latest uploaded reading: ' + latest.timestamp if latest else 'No readings yet. Import a CSV to get started.' }}</p></div><a href="{{ url_for('portal.setup') }}">Edit solar setup</a></div>
+<div class="metrics solar-metrics">
+<div class="metric"><span>Solar generation</span><strong>{{ '%.2f'|format(latest.generation_w / 1000) + ' kW' if latest else '—' }}</strong></div>
+<div class="metric"><span>Home consumption</span><strong>{{ '%.2f'|format(latest.consumption_w / 1000) + ' kW' if latest and latest.consumption_w is not none else 'Not available' }}</strong></div>
+<div class="metric"><span>Generation minus consumption</span><strong>{{ '%+.2f'|format(surplus / 1000) + ' kW' if surplus is not none else 'Not available' }}</strong></div>
+</div>
+<div class="recommendation"><h3>{{ 'Historical snapshot' if stale else 'What this reading tells you' }}</h3>
+{% if not latest %}<p>Your recommendations will appear once readings are available.</p>
+{% elif surplus is none %}<p>Solar generation is recorded. Add household consumption to compare generation with demand.</p>
+{% elif surplus > 0 %}<p>At this recorded moment, generation exceeded household consumption. This could be a useful time for an optional load if other conditions allow.</p>
+{% else %}<p>At this recorded moment, household consumption met or exceeded solar generation. Consider shifting optional loads to a higher-generation period.</p>{% endif %}
+<p class="muted">Uploaded data is not live. {% if stale %}The latest reading is more than 15 minutes old. {% endif %}Battery charging, grid flow, and appliance control are not measured or connected.</p></div>
+</section>
+<section class="dashboard-panel"><p class="eyebrow">Bring your own data</p><h2>Import solar readings</h2><p>Export data from your provider and map it to the SunIQ format. Required columns: <code>timestamp</code>, <code>generation_w</code>. Optional: <code>consumption_w</code>. Power must be in watts; timestamps need a timezone.</p><a href="{{ url_for('portal.csv_template') }}">Download example CSV</a><p class="muted">The example contains demonstration values, not your home's readings. Maximum 2 MB / 10,000 rows. Matching timestamps update existing readings.</p>
+<form class="account-form" action="{{ url_for('portal.import_readings') }}" method="post" enctype="multipart/form-data"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>CSV file<input type="file" name="readings" accept=".csv,text/csv" required></label><button class="primary-button" type="submit">Import readings</button></form></section>
+{% if readings %}<section class="dashboard-panel"><h2>Recent uploaded readings</h2><p class="muted">Up to 100 most recent records, newest first. All timestamps are UTC.</p><div class="table-scroll"><table><thead><tr><th scope="col">Timestamp (UTC)</th><th scope="col">Generation (W)</th><th scope="col">Consumption (W)</th></tr></thead><tbody>{% for row in readings %}<tr><td>{{ row.timestamp }}</td><td>{{ '%.1f'|format(row.generation_w) }}</td><td>{{ '%.1f'|format(row.consumption_w) if row.consumption_w is not none else 'Not available' }}</td></tr>{% endfor %}</tbody></table></div></section>{% endif %}
+<details class="dashboard-panel"><summary>Account &amp; privacy</summary><p>Signed in as {{ current_user.email }}. Your account and uploaded readings are private to this login. <a href="{{ url_for('portal.privacy') }}">How your data is used</a>.</p><form action="{{ url_for('portal.delete_account') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label><input type="checkbox" name="confirm" value="delete" required> I want to permanently delete my account, setup, and uploaded readings.</label><p><button type="submit">Delete my SunIQ account</button></p></form></details>
+{% endblock %}

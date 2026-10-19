@@ -1,0 +1,15 @@
+﻿{% extends "base.html" %}
+{% block title %}Set up your solar · SunIQ{% endblock %}
+{% block content %}
+<section class="hero"><p class="eyebrow">Your solar workspace</p><h1>Let's meet your solar system.</h1><p class="headline">Choose the provider you use to monitor your rooftop panels.</p></section>
+<form class="dashboard-panel account-form" method="post">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label>System name<input name="name" maxlength="80" required placeholder="My home solar" value="{{ system.name if system else '' }}" autocomplete="off"></label>
+<fieldset><legend>Solar monitoring provider</legend><div class="provider-grid">
+{% for key, details in providers.items() %}<label class="provider-option"><input type="radio" name="provider" value="{{ key }}" required {% if system and system.provider == key %}checked{% endif %}><span><strong>{{ details[0] }}</strong><small>{{ details[1] }}</small></span></label>{% endfor %}
+</div></fieldset>
+<label>Site identifier (optional)<input name="site_id" maxlength="120" value="{{ system.site_id if system else '' }}" placeholder="A name or ID from your monitoring app"><small>No passwords, API keys, or access tokens.</small></label>
+<div class="notice"><strong>Start with an export.</strong> Saving a provider does not authorize access to your system. This version supports CSV import; automatic provider connections are not available yet. Changing provider or site identifier clears previously imported readings.</div>
+<button class="primary-button" type="submit">Save and open my solar →</button>
+</form>
+{% endblock %}

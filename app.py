@@ -3,7 +3,7 @@ import math
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from flask import Flask, render_template, request
+from flask import Flask, g, redirect, render_template, request, url_for
 from prediction import predict_next_power
 
 
@@ -142,10 +142,16 @@ def simulate(args):
                 action=action, reason=reason)
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
+    from solar_portal import init_portal
+    init_portal(app, test_config)
 
     @app.get("/")
+    def home():
+        return redirect(url_for('portal.workspace' if g.user else 'portal.signin'))
+
+    @app.get("/experiment")
     def dashboard():
         sessions = load_ina219_sessions()
         lookback = request.args.get("lookback", "all")
@@ -172,4 +178,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)

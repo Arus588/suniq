@@ -6,6 +6,8 @@
   <h1>Make smarter choices with every ray of sunlight.</h1>
   <p class="headline">SunIQ tracks solar measurements, predicts available energy, and recommends when to run a load, conserve power, or charge a battery.</p>
 </section>
+<section class="dashboard-panel"><p class="eyebrow">For your home solar</p><h2>Start your personal solar workspace</h2><p>Sign in with Google, select your monitoring provider, and import your own rooftop solar readings. Your uploads stay separate from this public experiment.</p><a class="primary-button" href="{{ url_for('portal.workspace') if current_user else url_for('portal.signin') }}">{{ 'Open my solar' if current_user else 'Get started with Google' }} ?</a><p class="muted">CSV import available. Automatic provider connections are not available yet.</p></section>
+
 
 <section class="dashboard-panel" aria-labelledby="how-it-works-heading">
   <p class="eyebrow">How SunIQ works today</p>
@@ -45,7 +47,7 @@
   </div>
   <div class="chart-wrap">
     <div class="chart-title"><h3>Power by reading</h3><span>Solid: measured &middot; Dashed: prediction</span></div>
-    <form class="plot-controls" method="get" action="/" aria-label="Choose plot time range">
+    <form class="plot-controls" method="get" action="{{ url_for('dashboard') }}" aria-label="Choose plot time range">
       {% if auto_refresh %}<input type="hidden" name="live" value="1">{% endif %}
       <label>Show readings
         <select name="lookback" id="plot-lookback">

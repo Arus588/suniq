@@ -69,7 +69,7 @@ class CaptureTests(unittest.TestCase):
                 self.assertEqual(sessions[0]["label"], "Sun")
                 self.assertEqual(sessions[0]["prediction"]["next_mw"], 34)
                 self.assertEqual(sessions[0]["prediction"]["mae_mw"], 4)
-                page = app.app.test_client().get("/?live=1").get_data(as_text=True)
+                page = app.app.test_client().get("/experiment?live=1").get_data(as_text=True)
                 self.assertIn("34.0 mW", page)
                 self.assertIn("Stop auto-refresh", page)
 

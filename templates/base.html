@@ -6,16 +6,27 @@
     <meta name="description" content="SunIQ smart solar-energy dashboard">
     <title>{% block title %}SunIQ{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% if request.endpoint in ['portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/simple-app.css') }}">{% endif %}
   </head>
-  <body>
+  <body class="{{ 'simple-app' if request.endpoint in ['portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] else '' }}">
     <header class="site-header">
-      <a class="brand" href="{{ url_for('dashboard') }}">Sun<span>IQ</span></a>
+      <a class="brand" href="{{ url_for('home') }}">Sun<span>IQ</span></a>
       <nav aria-label="Main navigation">
-        <a href="{{ url_for('dashboard') }}#photo-story-heading">How I built and tested SunIQ</a>
-        <a href="{{ url_for('dashboard') }}#creator-heading">About the creator</a>
+
+        {% if current_user %}
+        <a href="{{ url_for('portal.workspace') }}">My solar</a>
+        <form method="post" action="{{ url_for('portal.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Sign out</button></form>
+        {% elif session.get('demo_profile') %}{% if session.get('display_name') %}<span class="muted">{{ session.display_name }}</span>{% endif %}<form method="post" action="{{ url_for('portal.demo_signout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Sign out</button></form>{% else %}{% endif %}
+        {% if request.endpoint == 'dashboard' %}<a href="{{ url_for('dashboard') }}#creator-heading">About the project</a>{% endif %}
       </nav>
     </header>
     <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}
+      {% endwith %}
+      {% if request.endpoint in ['portal.planner','portal.day_planner','portal.demo_setup','portal.demo'] %}
+      {% if current_user %}<p class="user-greeting">Welcome, {{ current_user.name }}</p>{% elif session.get('display_name') %}<p class="user-greeting">Welcome, {{ session.display_name }}</p>{% endif %}
+      {% endif %}
       {% block content %}{% endblock %}
     </main>
   </body>

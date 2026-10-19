@@ -96,3 +96,58 @@ button.active, button:hover { background: var(--accent); color: #172318; }
 .simulation-controls input, .simulation-controls select { width: 100%; padding: .7rem; border: 1px solid #4c783d; border-radius: .4rem; background: #122016; color: var(--ink); font: inherit; }
 .recommendation { margin-top: 1rem; border-left: 3px solid var(--accent); padding: .5rem 1rem; background: #203020; }
 button:disabled { opacity: .45; cursor: default; }
+
+.account-layout { display:grid; grid-template-columns:1.15fr 1fr; gap:3rem; align-items:start; }
+.account-layout h1 { font-size:clamp(2.5rem,5vw,4.3rem); }
+.account-layout .dashboard-panel { margin-top:0; }
+.auth-card p, .account-form p, .recommendation p { line-height:1.65; }
+.solar-symbol { color:var(--accent); font-size:3rem; display:block; margin-bottom:1rem; }
+.onboarding-steps { padding-left:1.3rem; color:var(--muted); line-height:2.5; margin-top:2rem; }
+.primary-button { display:inline-block; border-radius:.65rem; background:var(--accent); color:#172318; font:inherit; font-weight:750; padding:.9rem 1.3rem; }
+.google-button { width:100%; margin:1rem 0; background:#fff; border-color:#fff; }
+.google-button:disabled { opacity:.6; }
+.text-link { color:var(--accent); }
+.notice { border:1px solid #7c723c; border-radius:.65rem; background:#302c18; padding:1rem; margin-bottom:1rem; line-height:1.6; }
+.notice.error { background:#462626; border-color:#b77676; }
+.notice.success { background:#203a24; border-color:#68976c; }
+.account-form { display:grid; gap:1.5rem; }
+.account-form label { display:grid; gap:.6rem; }
+.account-form input:not([type=radio]):not([type=checkbox]) { width:100%; padding:.85rem; border:1px solid #61765a; border-radius:.5rem; background:#122016; color:var(--ink); font:inherit; }
+.account-form small { color:var(--muted); }
+.account-form fieldset { border:0; padding:0; margin:0; min-width:0; }
+.account-form legend { margin-bottom:1rem; }
+.provider-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; }
+.account-form .provider-option { display:flex; align-items:center; gap:.8rem; border:1px solid #4c6547; border-radius:.7rem; padding:1.1rem; cursor:pointer; background:#203020; }
+.provider-option:has(input:checked) { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+.provider-option input { accent-color:var(--accent); }
+.provider-option strong,.provider-option small { display:block; }
+.provider-option small { margin-top:.4rem; }
+.solar-metrics { grid-template-columns:repeat(3,1fr); }
+input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+.site-header nav { align-items:center; }
+.site-header nav form { margin:0; }
+@media(max-width:50rem) { .account-layout { grid-template-columns:1fr; gap:2rem; } .provider-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:30rem) { .provider-grid,.solar-metrics { grid-template-columns:1fr; } .dashboard-panel { padding:1.2rem; } }
+
+.demo-indicator { display:inline-flex; align-items:center; border:1px solid #64754d; background:#28351d; color:#d4e5ac; border-radius:999px; padding:.3rem .65rem; font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.polished-signin { padding-top:2rem; }
+.polished-signin .auth-card { padding:2.5rem; box-shadow:0 24px 80px #0003; }
+.auth-card h2 { font-size:1.8rem; letter-spacing:-.04em; }
+.feature-pills { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2rem; }
+.feature-pills span { border:1px solid #41563a; border-radius:999px; padding:.5rem .8rem; color:var(--muted); font-size:.8rem; }
+.signin-illustration { display:flex; align-items:center; gap:1rem; margin-top:3rem; color:var(--accent); font-size:2.5rem; }
+.signin-illustration strong { font-size:1.3rem; padding:1.5rem .6rem; border:1px solid #546e42; border-radius:1rem; }
+.energy-line { flex:1; border-top:2px dashed #68834c; }
+.demo-account { display:flex; align-items:center; gap:.8rem; border:1px solid #42563c; border-radius:.8rem; padding:1rem; margin-top:1.5rem; }
+.demo-account small { display:block; color:var(--muted); margin-top:.3rem; }
+.demo-account .demo-indicator { margin-left:auto; }
+.avatar { background:#354a28; color:var(--green); padding:.85rem; border-radius:50%; font-weight:750; }
+.auth-footer { border-top:1px solid #3a4937; margin-top:1.5rem; padding-top:1.3rem; font-size:.8rem; line-height:1.6; color:var(--muted); display:grid; gap:.7rem; }
+.workspace-topline { display:flex; align-items:center; gap:1rem; color:var(--muted); font-size:.8rem; margin-bottom:2rem; }
+.form-columns { display:grid; grid-template-columns:1fr 1fr; gap:1.3rem; }
+.setup-footer,.scenario-panel { display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+.energy-flow { display:flex; align-items:center; justify-content:center; gap:1.2rem; padding:2rem 0 1rem; color:var(--green); }
+.energy-flow-line { color:var(--accent); font-size:1.6rem; }
+.solar-metrics .metric strong { font-size:2.3rem; letter-spacing:-.04em; }
+.solar-metrics .metric strong small { display:inline; font-size:.9rem; letter-spacing:0; }
+@media(max-width:38rem) { .form-columns { grid-template-columns:1fr; } .energy-flow { gap:.5rem; font-size:.8rem; } .polished-signin .auth-card { padding:1.4rem; } }

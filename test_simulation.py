@@ -32,7 +32,7 @@ class SimulationTests(unittest.TestCase):
     def test_page_and_data_isolation(self):
         path=Path('data/measurements/solar-readings-2026-09-19.csv')
         before=path.read_bytes()
-        response=app.test_client().get('/?sunlight=100&battery=10&hours=2')
+        response=app.test_client().get('/experiment?sunlight=100&battery=10&hours=2')
         self.assertEqual(response.status_code,200)
         page=response.get_data(as_text=True)
         for expected in ['Conserve energy','0.06000 Wh','Recorded manual measurements']:
@@ -44,7 +44,7 @@ class SimulationTests(unittest.TestCase):
 
     def test_recorded_data_has_separate_page(self):
         client = app.test_client()
-        dashboard = client.get('/').get_data(as_text=True)
+        dashboard = client.get('/experiment').get_data(as_text=True)
         data = client.get('/data')
         self.assertEqual(data.status_code, 200)
         self.assertIn('View all recorded data', dashboard)

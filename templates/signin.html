@@ -1,0 +1,9 @@
+﻿{% extends "base.html" %}
+{% block title %}SunIQ | {{ 'Register' if mode=='register' else 'Login' }}{% endblock %}
+{% block content %}
+<section class="welcome-screen"><div class="sun-mark" aria-hidden="true">&#9728;</div><h1>Use your sunshine wisely.</h1><p>Choose a task. Find a better time to run it.</p>
+<div class="signin-white-card"><div class="auth-tabs"><a href="{{ url_for('portal.signin') }}" class="{{ 'selected' if mode!='register' else '' }}">Login</a><a href="{{ url_for('portal.signin',mode='register') }}" class="{{ 'selected' if mode=='register' else '' }}">Register</a></div>
+<form method="post" action="{{ url_for('portal.access_request') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="mode" value="{{ mode }}">
+{% if mode=='register' %}<label class="name-field">Name<input name="name" autocomplete="name" maxlength="80" required></label>{% endif %}<label class="name-field">Email<input type="email" name="email" autocomplete="email" maxlength="254" required></label><label class="name-field">Password<input type="password" name="password" autocomplete="{{ 'new-password' if mode=='register' else 'current-password' }}" maxlength="256" required></label><button class="primary-button" type="submit">{{ 'Register' if mode=='register' else 'Login' }}</button></form>
+<small>Access is by approval. Registration is completed after a review.</small></div></section>
+{% endblock %}

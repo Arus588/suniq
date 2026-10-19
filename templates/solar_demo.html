@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}SunIQ | My energy<p class="forecast-disclosure">Illustrative readings, not a live inverter connection.</p>{% endblock %}
+{% block content %}
+<section class="energy-screen"><div class="overview-heading"><div><p class="eyebrow">{{ system.name or 'My home solar' }}</p><h1>My energy</h1></div><a href="{{ url_for('portal.demo_setup') }}">{{ providers[provider][0] }}{% if system.model %} &middot; {{ system.model }}{% endif %} &rsaquo;</a></div>
+<section class="energy-advice {{ 'positive' if surplus > 0 else 'waiting' }}"><span class="advice-icon" aria-hidden="true">{{ '&#9728;'|safe if surplus > 0 else '&#9790;'|safe }}</span><h2>{{ 'A good time to use solar.' if surplus > 0 else 'Save optional tasks for later.' }}</h2><p>{{ 'Your solar generation is higher than household demand.' if surplus > 0 else 'Your home is using more power than your panels generate.' }}</p></section>
+<div class="energy-numbers"><div><span>Solar</span><strong>{{ '%.2f'|format(generation / 1000) }}</strong><small>kW generated</small></div><div><span>Home</span><strong>{{ '%.2f'|format(consumption / 1000) }}</strong><small>kW used</small></div><div><span>Balance</span><strong>{{ '%+.2f'|format(surplus / 1000) }}</strong><small>kW difference</small></div></div>
+
+</section>
+<p class="forecast-disclosure">Illustrative readings, not a live inverter connection.</p>{% endblock %}
