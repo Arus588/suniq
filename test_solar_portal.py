@@ -78,7 +78,7 @@ class PortalTests(unittest.TestCase):
 
     def test_default_page_and_logout(self):
         self.assertEqual(self.client.get('/').location, '/signin')
-        self.assertIn('Login', self.client.get('/', follow_redirects=True).get_data(as_text=True))
+        self.assertIn('Sign in', self.client.get('/', follow_redirects=True).get_data(as_text=True))
         self.login()
         self.assertEqual(self.client.get('/').location, '/my-solar')
         self.assertEqual(self.client.get('/signin').location, '/my-solar')
@@ -91,7 +91,7 @@ class PortalTests(unittest.TestCase):
         self.assertEqual(self.client.get('/my-solar').location, '/signin')
         self.assertEqual(self.client.post('/my-solar/setup').status_code, 400)
         page = self.client.get('/signin').get_data(as_text=True)
-        self.assertIn('Login', page)
+        self.assertIn('Sign in', page)
         self.assertNotIn('awaiting administrator setup', page)
 
     def test_private_upload_and_account_isolation(self):
@@ -178,7 +178,7 @@ class PortalTests(unittest.TestCase):
                 page = self.client.get('/demo', query_string={'provider':provider,'scenario':scenario})
                 self.assertEqual(page.status_code,200)
                 self.assertIn(expected.split()[0],page.get_data(as_text=True))
-                self.assertIn('Illustrative readings',page.get_data(as_text=True))
+                self.assertIn('Simulated data',page.get_data(as_text=True))
         with self.client.session_transaction() as state:
             self.assertNotIn('user_id',state)
         self.assertEqual(self.client.get('/my-solar').location,'/signin')

@@ -132,3 +132,226 @@
 .auth-tabs { display:flex; gap:1rem; border-bottom:1px solid #e0e7df; margin-bottom:1.5rem; }
 .auth-tabs a { flex:1; padding:.7rem; text-decoration:none; color:#65766b; }
 .auth-tabs a.selected { color:#216e49; border-bottom:2px solid #216e49; font-weight:700; }
+
+/* Login introduction and illustrative energy preview. */
+.simple-app main:has(.solar-welcome) { max-width:1100px; padding-top:2rem; }
+.solar-welcome { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.85fr); gap:4rem; align-items:start; margin:1rem auto; }
+.solar-kicker { display:flex; align-items:center; gap:.6rem; color:#55715d; font-size:.75rem; font-weight:650; margin:0 0 1.2rem; }
+.solar-kicker span { color:#b78413; font-size:1.5rem; }
+.simple-app .solar-story h1 { font-size:clamp(2.2rem,4vw,3.25rem); line-height:1.12; }
+.solar-story h1 span { color:#348157; }
+.solar-intro { color:#607367; font-size:1rem; line-height:1.75; margin:1.3rem 0 1.5rem; max-width:34rem; }
+.solar-preview { background:#fff; border:1px solid #dfe8dd; border-radius:1.1rem; padding:1.3rem; box-shadow:0 12px 35px #24472d06; }
+.preview-heading { display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; gap:.5rem; }
+.preview-heading strong { font-size:.85rem; }
+.preview-heading > span { font-size:.65rem; color:#637268; background:#eff3ec; border-radius:1rem; padding:.3rem .5rem; }
+.solar-day-chart { display:block; width:100%; height:auto; margin-top:1rem; }
+.preview-legend { display:flex; flex-wrap:wrap; gap:1rem; font-size:.7rem; color:#607367; margin:.8rem 0 1.1rem; }
+.preview-legend span { display:flex; align-items:center; gap:.4rem; }
+.preview-legend i { width:16px; border-top:3px solid #348157; }
+.preview-legend .usage-key { border-top:2px dashed #ac7c22; }
+.sunny-window { display:flex; align-items:center; gap:.8rem; background:#f7f5e8; padding:.9rem; border-radius:.7rem; }
+.sunny-window > span { color:#a97d19; font-size:1.7rem; }
+.sunny-window strong { font-size:.8rem; }
+.sunny-window p { font-size:.75rem; line-height:1.5; color:#6d735f; margin:.3rem 0 0; }
+.solar-benefits { list-style:none; padding:0; margin:1.5rem 0 0; display:grid; gap:1rem; }
+.solar-benefits li { display:flex; gap:.8rem; }
+.solar-benefits li > span { display:grid; place-items:center; flex-shrink:0; width:2rem; height:2rem; border-radius:.6rem; background:#e6eee2; color:#348157; font-size:.7rem; font-weight:700; }
+.solar-benefits strong { font-size:.85rem; }
+.solar-benefits p { color:#65766b; font-size:.8rem; line-height:1.6; margin:.25rem 0 0; }
+.solar-preview-note { font-size:.7rem; color:#65766b; line-height:1.7; margin:1.3rem 0 0; }
+.solar-auth { margin-top:3rem; text-align:center; padding:2rem; background:white; border:1px solid #dfe8dd; border-radius:1.2rem; box-shadow:0 16px 45px #24472d08; }
+.auth-sun { display:grid; place-items:center; width:3rem; height:3rem; margin:0 auto 1rem; border-radius:50%; background:#fff4d3; color:#a77b13; font-size:2rem; }
+.auth-welcome h2 { font-size:1.35rem; letter-spacing:-.035em; margin:0; }
+.auth-welcome p { color:#65766b; font-size:.85rem; line-height:1.6; margin:.7rem 0 1.5rem; }
+.solar-auth .primary-button { width:100%; cursor:pointer; }
+.solar-auth small { display:block; font-size:.7rem; color:#65766b; line-height:1.6; margin-top:1.2rem; }
+@media(max-width:800px) { .solar-welcome { gap:2rem; grid-template-columns:minmax(0,1fr); max-width:540px; } .solar-auth { margin-top:0; } }
+@media(max-width:38rem) { .solar-welcome { margin:0 auto; } .solar-auth { padding:1.4rem; } .solar-preview { padding:1rem; } }
+
+.energy-sample-banner { padding:.7rem 1rem; border-radius:.6rem; background:#fff2d0; color:#755b1f; font-size:.8rem; line-height:1.6; }
+.energy-section-title { font-size:1rem; margin:1.8rem 0 1rem; }
+.energy-section-title span { color:#65766b; font-size:.75rem; font-weight:400; margin-left:.5rem; }
+.daily-energy-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-bottom:2rem; }
+.daily-energy-cards article { padding:1.3rem; background:white; border:1px solid #dce5dc; border-radius:.9rem; }
+.daily-energy-cards article > span { color:#65766b; font-size:.75rem; }
+.daily-energy-cards strong { display:block; font-size:1.8rem; margin:.8rem 0; letter-spacing:-.04em; }
+.daily-energy-cards small { font-size:.8rem; font-weight:400; }
+.daily-energy-cards p { font-size:.75rem; color:#65766b; line-height:1.6; margin:0; }
+.weekly-energy { padding:1.5rem; background:white; border:1px solid #dce5dc; border-radius:1rem; }
+.weekly-energy h2 { font-size:1.2rem; margin:0; }
+.weekly-energy .overview-heading { margin-bottom:1rem; }
+.weekly-energy p { color:#65766b; font-size:.8rem; }
+.weekly-legend { display:flex; flex-wrap:wrap; gap:1rem; font-size:.75rem; color:#65766b; }
+.weekly-legend span { display:flex; align-items:center; gap:.4rem; }
+.weekly-legend i { width:.65rem; height:.65rem; background:#348157; border-radius:2px; }
+.weekly-legend span + span i { background:#d9aa45; }
+.weekly-bars { display:flex; gap:1rem; margin-top:1.5rem; }
+.weekly-day { flex:1; min-width:0; text-align:center; font-size:.75rem; color:#65766b; }
+.weekly-pair { display:flex; align-items:flex-end; justify-content:center; gap:4px; height:170px; border-bottom:1px solid #dce5dc; margin-bottom:.7rem; background:repeating-linear-gradient(to top,transparent 0,transparent 41px,#edf1eb 42px,#edf1eb 43px); }
+.weekly-pair span { width:25%; max-width:25px; border-radius:4px 4px 0 0; }
+.weekly-solar { background:#348157; }.weekly-home { background:#d9aa45; }
+.energy-next { margin-top:1.5rem; padding:1.5rem; border-radius:1rem; background:#e6f2e9; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; }
+.energy-next h2 { font-size:1.2rem; margin:0; }.energy-next p { color:#536b5b; font-size:.85rem; line-height:1.6; }
+.energy-next > a { font-size:.85rem; }
+@media(max-width:38rem) { .daily-energy-cards { grid-template-columns:1fr; } .weekly-energy { padding:1rem; } .weekly-bars { gap:.5rem; } }
+
+/* Keep energy figures near the top of the overview. */
+.simple-app main:has(.energy-screen) { padding-top:.8rem; }
+.energy-screen > .overview-heading { margin-bottom:1rem; gap:.75rem; flex-wrap:wrap; }
+.simple-app .energy-screen h1 { font-size:1.8rem; }
+.energy-screen .overview-heading > a { font-size:.75rem; }
+.energy-status { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; border-radius:.6rem; background:#e6f2e9; font-size:.85rem; }
+.energy-status span { color:#526b59; font-size:.7rem; }
+.energy-screen .energy-numbers { padding:.7rem 0; }
+.energy-screen .energy-numbers > div { padding:.5rem 0; }
+.energy-screen .energy-numbers > div + div { padding-left:1.3rem; }
+.energy-screen .energy-numbers strong { font-size:2rem; margin:.3rem 0; }
+.energy-screen .daily-energy-cards { margin-bottom:1.2rem; }
+.energy-screen .daily-energy-cards article { padding:1rem; }
+.energy-screen .daily-energy-cards strong { margin:.5rem 0 0; }
+.energy-screen .daily-energy-cards p { margin-top:.4rem; }
+.energy-screen .weekly-energy { padding:1.2rem; }
+
+/* Compact day planner, with optional controls disclosed on demand. */
+.day-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.simple-app .day-heading h1 { font-size:2rem; }
+.day-heading a { font-size:.8rem; white-space:nowrap; }
+.day-planner > .planner-intro { font-size:.9rem; margin:.7rem 0 1.2rem; line-height:1.6; }
+.day-plan-editor { border:1px solid #dce5dc; background:white; border-radius:1rem; overflow:hidden; }
+.day-plan-editor > summary,.recent-activity > summary { cursor:pointer; padding:1rem; font-weight:650; font-size:.9rem; }
+.day-plan-editor > summary > span,.recent-activity > summary > span { float:right; color:#65766b; font-weight:400; font-size:.8rem; }
+.day-plan-editor > .planner-form { border:0; border-radius:0; padding:0 1rem 1rem; gap:1rem; }
+.day-planner .day-task { padding:.8rem 0; }
+.day-planner .day-task .task-select { margin:0; cursor:pointer; }
+.task-options { margin:.7rem 0 0 1.8rem; }
+.task-options > summary { cursor:pointer; color:#526b59; font-size:.75rem; }
+.task-options > summary span { color:#65766b; margin-left:.5rem; }
+.task-options .planner-times { margin-top:.8rem; }
+.day-planner .planner-times label { font-size:.8rem; gap:.4rem; }
+.day-planner .planner-times select,.day-planner .planner-times input { padding:.65rem; }
+.day-planner .plan-result { padding:1.4rem; margin-top:1rem; }
+.day-planner .plan-result h2 { font-size:2.3rem; }
+.day-planner .plan-stats { margin-top:1rem; }
+.day-planner .result-explanation { font-size:.8rem; }
+.day-planner .day-timeline { margin-top:1.3rem; }
+.day-planner .recent-activity { margin-top:1.2rem; padding-top:0; border:1px solid #dce5dc; border-radius:.8rem; }
+.day-planner .recent-activity > p,.day-planner .recent-activity > details,.day-planner .recent-activity > article { margin:1rem; }
+@media(max-width:38rem) { .task-options { margin-left:0; } .task-options > summary span { display:block; margin:.4rem 0 0 1rem; } }
+
+.live-day-planner .planner-intro { margin:.6rem 0 1rem; font-size:.85rem; }
+.simple-app .live-day-planner h1 { font-size:1.9rem; }
+.simple-app main:has(.live-day-planner) { padding-top:1rem; }
+.live-energy-total { padding:1rem 1.3rem; background:#e6f2e9; border-radius:.9rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.6rem; }
+.live-energy-total strong { display:block; font-size:2.5rem; letter-spacing:-.05em; }
+.live-energy-total span { font-size:.8rem; color:#526b59; }
+.live-energy-breakdown { display:grid; gap:.4rem; text-align:right; }
+.live-solar-meter { width:100%; height:5px; background:#cfdbcf; border-radius:1rem; overflow:hidden; }
+.live-solar-meter span { display:block; height:100%; background:#348157; }
+.live-forecast { margin:1rem 0; }.live-forecast > span { font-size:.7rem; color:#65766b; }
+.live-forecast-bars { display:flex; align-items:end; gap:3px; height:45px; margin:.4rem 0; }
+.live-forecast-bars i { flex:1; background:#a6c7a9; border-radius:2px 2px 0 0; }
+.live-time-axis { display:flex; justify-content:space-between; font-size:.65rem; color:#65766b; }
+#live-appliances { display:grid; gap:.6rem; }
+.live-appliance { padding:.9rem 1rem; border:1px solid #dce5dc; border-radius:.8rem; background:white; }
+.live-appliance-heading,.live-appliance-timing { display:flex; align-items:center; justify-content:space-between; gap:.5rem; flex-wrap:wrap; }
+.live-appliance-heading label { display:flex; align-items:center; gap:.6rem; font-size:.9rem; cursor:pointer; }
+.live-appliance-heading input { accent-color:#216e49; width:1rem; height:1rem; }
+.live-appliance-heading > span { font-size:.75rem; color:#65766b; }.live-appliance-heading b { margin:0 .4rem; font-weight:400; }
+.live-appliance-timing { margin:.7rem 0 .4rem; font-size:.75rem; color:#65766b; }
+.live-task-solar { color:#216e49; font-weight:650; }
+.live-time-slider { display:block; width:100%; accent-color:#216e49; cursor:ew-resize; height:20px; margin:0; }
+.is-off .live-appliance-timing { opacity:.55; }.is-off .live-time-slider { opacity:.4; cursor:default; }
+.live-reset { border:1px solid #cbd9cb; border-radius:.5rem; padding:.6rem .9rem; margin-top:.8rem; background:white; color:#216e49; cursor:pointer; font:inherit; font-size:.75rem; }
+.live-day-planner .forecast-disclosure { font-size:.65rem; margin-top:.8rem; }
+
+/* A square start-time handle on an unfilled track. */
+.live-time-slider { appearance:none; -webkit-appearance:none; background:transparent; height:28px; padding:0; border:0; border-radius:0; }
+.live-time-slider::-webkit-slider-runnable-track { height:4px; border-radius:2px; background:#dce5dc; }
+.live-time-slider::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:18px; height:18px; border:2px solid white; border-radius:3px; background:#216e49; margin-top:-7px; box-shadow:0 0 0 1px #216e49; }
+.live-time-slider::-moz-range-track { height:4px; border:0; border-radius:2px; background:#dce5dc; }
+.live-time-slider::-moz-range-progress { height:4px; background:#dce5dc; }
+.live-time-slider::-moz-range-thumb { width:14px; height:14px; border:2px solid white; border-radius:3px; background:#216e49; box-shadow:0 0 0 1px #216e49; }
+.live-appliance-timing .live-start { font-weight:700; color:#216e49; }
+
+.solar-budget { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; margin:1rem 0 .5rem; }
+.solar-budget > div { background:white; border:1px solid #dce5dc; border-radius:.8rem; padding:1rem; }
+.solar-budget span { display:block; color:#65766b; font-size:.75rem; line-height:1.5; }
+.solar-budget strong { display:block; color:#216e49; font-size:1.5rem; margin-top:.4rem; letter-spacing:-.03em; }
+.solar-budget-note { font-size:.7rem; color:#65766b; line-height:1.5; margin:.5rem 0 1rem; }
+@media(max-width:38rem) { .solar-budget { gap:.4rem; } .solar-budget > div { padding:.7rem; } .solar-budget strong { font-size:1.1rem; } .solar-budget span { font-size:.65rem; } }
+
+/* Refined sign-in layout. */
+.simple-app:has(.solar-welcome) { background:#f8faf8; }
+.simple-app main:has(.solar-welcome) { max-width:1040px; padding:2.5rem 0 3rem; }
+.solar-welcome { grid-template-columns:minmax(0,1.2fr) minmax(340px,.9fr); gap:4.5rem; align-items:center; margin:0 auto; }
+.solar-story { padding:1.5rem 0; }
+.solar-kicker { color:#46705a; font-size:.65rem; letter-spacing:.16em; font-weight:700; margin-bottom:1.2rem; }
+.simple-app .solar-story h1 { font-size:clamp(2.3rem,4vw,3.2rem); font-weight:650; line-height:1.13; letter-spacing:-.055em; }
+.solar-intro { font-size:.9rem; line-height:1.8; margin:1.2rem 0 1.8rem; max-width:27rem; }
+.solar-preview { padding:1.2rem; background:#f0f5ef; border:1px solid #e1e9df; box-shadow:none; border-radius:.8rem; }
+.preview-heading strong { font-size:.8rem; font-weight:600; }.preview-heading > span { background:white; }
+.preview-legend { margin:.7rem 0 0; }
+.login-features { display:flex; flex-wrap:wrap; gap:.6rem 1rem; margin-top:1.2rem; font-size:.7rem; color:#536b5b; }
+.login-features span::before { content:'\2713'; margin-right:.4rem; color:#348157; }
+.solar-preview-note { font-size:.65rem; max-width:28rem; margin-top:1rem; }
+.solar-auth { margin:0; padding:2.2rem; text-align:left; border:1px solid #e0e7df; border-radius:1rem; box-shadow:0 16px 48px #173b2410; }
+.auth-welcome .auth-label { color:#607367; font-size:.6rem; font-weight:650; letter-spacing:.14em; margin:0 0 .9rem; }
+.auth-welcome h2 { font-size:1.8rem; font-weight:650; letter-spacing:-.045em; }
+.auth-welcome p { font-size:.85rem; margin:.6rem 0 1.5rem; }
+.solar-auth .auth-tabs { background:#f0f4f0; border:0; border-radius:.5rem; padding:.25rem; gap:.2rem; margin-bottom:1.5rem; }
+.solar-auth .auth-tabs a { text-align:center; font-size:.8rem; padding:.6rem .3rem; border:0; border-radius:.35rem; font-weight:500; }
+.solar-auth .auth-tabs a.selected { background:white; color:#216e49; box-shadow:0 1px 4px #183b2410; font-weight:650; }
+.solar-auth .name-field { font-size:.8rem; gap:.45rem; margin-bottom:1.1rem; font-weight:550; }
+.solar-auth .name-field input { padding:.85rem; border-radius:.5rem; font-size:.85rem; font-weight:400; }
+.solar-auth .name-field input::placeholder { color:#8b988f; }
+.solar-auth .name-field input:focus { border-color:#348157; outline:2px solid #34815725; outline-offset:1px; }
+.solar-auth .primary-button { border-radius:.5rem; padding:.9rem; font-size:.85rem; margin-top:.2rem; }
+.solar-auth small { text-align:center; font-size:.65rem; margin-top:1rem; }
+.login-privacy { display:block; text-align:center; font-size:.7rem; margin-top:1.4rem; text-underline-offset:3px; }
+@media(max-width:800px) { .solar-welcome { grid-template-columns:1fr; gap:1.5rem; max-width:480px; } .solar-story { padding:0; } .simple-app main:has(.solar-welcome) { padding-top:1rem; } }
+@media(max-width:38rem) { .solar-auth { padding:1.5rem; } }
+
+/* Compact sign-in card. */
+.solar-welcome { grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr); gap:3.5rem; }
+.solar-auth { width:100%; max-width:340px; justify-self:end; padding:1.5rem; }
+.auth-welcome h2 { font-size:1.5rem; }
+.auth-welcome .auth-label { margin-bottom:.65rem; }
+.auth-welcome p { font-size:.8rem; margin:.5rem 0 1.1rem; }
+.solar-auth .auth-tabs { margin-bottom:1.1rem; }
+.solar-auth .auth-tabs a { font-size:.75rem; padding:.5rem .2rem; }
+.solar-auth .name-field { margin-bottom:.8rem; gap:.35rem; }
+.solar-auth .name-field input { padding:.7rem .75rem; }
+.solar-auth .primary-button { padding:.75rem; }
+.login-privacy { margin-top:1rem; }
+@media(max-width:800px) { .solar-welcome { grid-template-columns:1fr; gap:1.5rem; } .solar-auth { justify-self:center; } }
+.energy-units-note { color:#65766b; font-size:.75rem; line-height:1.6; margin:0 0 1rem; }
+
+.about-page { max-width:760px; margin:auto; }
+.about-intro { max-width:650px; margin-bottom:2.5rem; }
+.simple-app .about-intro .eyebrow,.simple-app .about-build .eyebrow { color:#348157; }
+.simple-app .about-intro h1 { font-size:2.8rem; }
+.about-intro > p:last-child { font-size:1rem; line-height:1.9; color:#536b5b; margin-top:1.3rem; }
+.about-build h2 { font-size:1.45rem; letter-spacing:-.035em; margin:0; }
+.about-build > .muted { font-size:.85rem; line-height:1.6; }
+.about-build .photo-story { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; list-style:none; padding:0; margin:1.5rem 0; }
+.about-build .photo-story li { min-width:0; }
+.about-build figure { margin:0; border:1px solid #dce5dc; border-radius:.9rem; overflow:hidden; background:white; }
+.about-build .photo-story img { display:block; width:100%; height:230px; object-fit:cover; }
+.about-build figcaption { padding:1rem; color:#65766b; font-size:.8rem; line-height:1.7; }
+.about-build figcaption strong { display:block; color:#284c37; margin-bottom:.3rem; }
+.about-experiment-link { display:inline-block; font-size:.85rem; margin:1rem 0; text-underline-offset:4px; }
+@media(max-width:38rem) { .about-build .photo-story { grid-template-columns:1fr; } .about-build .photo-story img { height:auto; max-height:350px; } }
+.about-build .photo-story img.soldering-photo { object-fit:contain; background:#eef2eb; }
+.about-build .photo-story img[src$="1000231704.jpg"] { object-fit:contain; background:#eef2eb; }
+.about-build .photo-story img[src$="1000231702.jpg"] { object-fit:contain; background:#eef2eb; }
+.about-build .photo-story .parts-story { grid-column:1/-1; }
+.parts-photo-pair { display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); background:#eef2eb; }
+.about-build .photo-story .parts-photo-pair img { width:100%; height:290px; object-fit:contain; }
+@media(max-width:38rem) { .about-build .photo-story .parts-photo-pair img { height:190px; } }
+.solar-outlook { background:white; border:1px solid #dce5dc; border-radius:1rem; padding:1.2rem; margin-bottom:1.2rem; }
+.outlook-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }.outlook-heading h2 { font-size:1.2rem; margin:0; }.outlook-heading > span { font-size:.65rem; background:#eef4ed; color:#526b59; padding:.3rem .6rem; border-radius:1rem; }
+.outlook-stats { display:flex; flex-wrap:wrap; gap:1rem 2rem; margin:1rem 0; }.outlook-stats span { display:block; color:#65766b; font-size:.75rem; }.outlook-stats strong { display:block; font-size:1.1rem; color:#216e49; margin-top:.4rem; }
+.outlook-description,.outlook-details p { color:#65766b; font-size:.75rem; line-height:1.6; }
+.outlook-chart { height:105px; display:flex; gap:3px; border-bottom:1px solid #dce5dc; margin:1rem 0 .6rem; }.outlook-slot { flex:1; display:flex; align-items:end; }.outlook-slot span { width:100%; background:#aacbb0; border-radius:3px 3px 0 0; min-height:2px; }.outlook-best { background:#fff2cf; }.outlook-best span { background:#216e49; }
+.outlook-details { margin-top:1rem; font-size:.75rem; color:#526b59; }.outlook-details summary { cursor:pointer; }.outlook-link { display:block; margin-top:1rem; font-size:.8rem; }

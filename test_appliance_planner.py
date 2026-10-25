@@ -95,9 +95,9 @@ class DayPlannerTests(unittest.TestCase):
         from app import app
         c=app.test_client()
         page=c.get('/day-planner').get_data(as_text=True)
-        self.assertIn('Your suggested schedule',page)
+        self.assertIn('live-solar-percent',page)
         self.assertIn('EV charging',page)
-        self.assertIn('Illustrative forecast',page)
+        self.assertIn('Sample forecast',page)
         page=c.get('/day-planner?submitted=1').get_data(as_text=True)
-        self.assertIn('Choose between one and four appliances',page)
-        self.assertNotIn('Your suggested schedule',page)
+        self.assertIn('live-appliances',page)
+        self.assertNotIn('type="checkbox" checked',page)

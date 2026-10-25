@@ -6,28 +6,32 @@
     <meta name="description" content="SunIQ smart solar-energy dashboard">
     <title>{% block title %}SunIQ{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    {% if request.endpoint in ['portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/simple-app.css') }}">{% endif %}
+    {% if request.endpoint in ['portal.about', 'portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] %}<link rel="stylesheet" href="{{ url_for('static', filename='css/simple-app.css') }}">{% endif %}
   </head>
-  <body class="{{ 'simple-app' if request.endpoint in ['portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] else '' }}">
+  <body class="{{ 'simple-app' if request.endpoint in ['portal.about', 'portal.signin', 'portal.demo_setup', 'portal.demo', 'portal.planner', 'portal.day_planner', 'portal.access_request'] else '' }}">
     <header class="site-header">
-      <a class="brand" href="{{ url_for('home') }}">Sun<span>IQ</span></a>
+      <div class="brand-group"><a class="brand" href="{{ url_for('home') }}">Sun<span>IQ</span></a><a class="creator-nav-link" href="{{ url_for('portal.about') }}" {% if request.endpoint=='portal.about' %}aria-current="page"{% endif %}>About the creator</a></div>
       <nav aria-label="Main navigation">
-
-        {% if current_user %}
-        <a href="{{ url_for('portal.workspace') }}">My solar</a>
-        <form method="post" action="{{ url_for('portal.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Sign out</button></form>
-        {% elif session.get('demo_profile') %}{% if session.get('display_name') %}<span class="muted">{{ session.display_name }}</span>{% endif %}<form method="post" action="{{ url_for('portal.demo_signout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Sign out</button></form>{% else %}{% endif %}
-        {% if request.endpoint == 'dashboard' %}<a href="{{ url_for('dashboard') }}#creator-heading">About the project</a>{% endif %}
+        {% if current_user or session.get('demo_profile') %}
+        {% if current_user or session.get('demo_system') %}
+        <a href="{{ url_for('portal.workspace') if current_user else url_for('portal.demo') }}" {% if request.endpoint in ['portal.demo','portal.workspace'] %}aria-current="page"{% endif %}>Dashboard</a>
+        <a href="{{ url_for('portal.day_planner') }}" {% if request.endpoint in ['portal.day_planner','portal.planner'] %}aria-current="page"{% endif %}>Appliance planner</a>
+        {% endif %}
+        <details class="profile-menu">
+          <summary>{{ current_user.name if current_user else session.get('display_name', 'My profile') }} <span aria-hidden="true">&#8964;</span></summary>
+          <div class="profile-dropdown"><form method="post" action="{{ url_for('portal.logout') if current_user else url_for('portal.demo_signout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Sign out</button></form></div>
+        </details>
+        {% elif request.endpoint != 'portal.signin' %}
+        <a class="nav-auth" href="{{ url_for('portal.signin') }}">Sign in</a>
+        {% endif %}
       </nav>
     </header>
     <main>
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% for category, message in messages %}<div class="notice {{ category }}" role="status">{{ message }}</div>{% endfor %}
       {% endwith %}
-      {% if request.endpoint in ['portal.planner','portal.day_planner','portal.demo_setup','portal.demo'] %}
-      {% if current_user %}<p class="user-greeting">Welcome, {{ current_user.name }}</p>{% elif session.get('display_name') %}<p class="user-greeting">Welcome, {{ session.display_name }}</p>{% endif %}
-      {% endif %}
       {% block content %}{% endblock %}
     </main>
+    <script src="{{ url_for('static', filename='js/profile-menu.js') }}" defer></script>
   </body>
 </html>

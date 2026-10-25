@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}SunIQ | About the creator{% endblock %}
+{% block content %}<div class="about-page">
+<section class="about-intro" aria-labelledby="creator-heading">
+  <p class="eyebrow" id="creator-heading">About the creator</p>
+  <p>I am Arush, currently in 11th grade, eager to learn about electrical engineering and power electronics for the clean energy industry. Inspired by solar farm visits and circuit experiments, I built SunIQ to explore how solar data and simple predictions can help off-grid systems use energy wisely.</p>
+</section>
+
+<section class="about-build" aria-labelledby="photo-story-heading">
+  <p class="eyebrow">Behind the build</p>
+  <h2 id="photo-story-heading">How I built and tested SunIQ</h2>
+  <p class="muted">From the first circuit to testing in sunlight and shade.</p>
+  <ol class="photo-story">
+    <li class="parts-story"><figure>
+      <div class="parts-photo-pair">
+        <img src="{{ url_for('static', filename='images/1000231702.jpg') }}" alt="Uno starter kit and prototype board" loading="lazy">
+        <img src="{{ url_for('static', filename='images/1000231704.jpg') }}" alt="Small solar panel with breadboard box, jumper wires, LED, and resistors" loading="lazy">
+      </div>
+      <figcaption><strong>Gather the parts.</strong> I started with an Uno starter kit, a prototype board, a small solar panel, and basic electronic components to build and test my circuits.</figcaption>
+    </figure></li>
+    <li><figure>
+      <img src="{{ url_for('static', filename='images/1000231835.jpg') }}" alt="Arush using a multimeter and recording readings on paper at an outdoor table" loading="lazy">
+      <figcaption><strong>Learn to measure.</strong> I used a multimeter during the early outdoor solar tests and wrote the readings down on paper.</figcaption>
+    </figure></li>
+    <li><figure>
+      <img src="{{ url_for('static', filename='images/1000233752.jpg') }}" class="soldering-photo" alt="Arush soldering a header pin onto the INA219 sensor board" loading="lazy">
+      <figcaption><strong>Prepare the sensor.</strong> I soldered header pins onto the INA219 so it could plug into the breadboard.</figcaption>
+    </figure></li>
+    <li><figure>
+      <img src="{{ url_for('static', filename='images/1000233770.jpg') }}" alt="INA219 sensor on a breadboard with jumper wires leading toward the Arduino Uno" loading="lazy">
+      <figcaption><strong>Connect the circuit.</strong> Jumper wires link the INA219 on the breadboard to the Arduino Uno.</figcaption>
+    </figure></li>
+    <li><figure>
+      <img src="{{ url_for('static', filename='images/1000233782.jpg') }}" alt="Outdoor SunIQ setup with solar panel, breadboard, Arduino Uno, and laptop" loading="lazy">
+      <figcaption><strong>Bring it together.</strong> The solar panel, sensor circuit, Uno, and laptop form the test setup.</figcaption>
+    </figure></li>
+    <li><figure>
+      <img src="{{ url_for('static', filename='images/1000233783.jpg') }}" alt="Arush holding a hand over the solar panel during the shade experiment" loading="lazy">
+      <figcaption><strong>Test the light change.</strong> I covered the panel with my hand while keeping its position fixed, then compared the sensor readings with the sun-facing test.</figcaption>
+    </figure></li>
+  </ol>
+</section>
+<a class="about-experiment-link" href="{{ url_for('dashboard') }}#prediction-heading">See the Arduino prediction experiment &rarr;</a><br>
+<a class="about-experiment-link" href="{{ url_for('dashboard') }}">Explore the solar experiment &rarr;</a></div>{% endblock %}

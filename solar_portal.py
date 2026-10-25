@@ -128,12 +128,17 @@ def privacy():
     return render_template('privacy.html')
 
 
+@portal.get('/about')
+def about():
+    return render_template('about.html')
+
+
 @portal.get('/signin')
 def signin():
     if g.user:
         return redirect(url_for('portal.workspace'))
     if session.get('demo_profile') and (session.get('password_authenticated') or current_app.config['PRESENTATION_LOGIN_ENABLED']):
-        return redirect(url_for('portal.planner') if session.get('demo_system') else url_for('portal.demo_setup'))
+        return redirect(url_for('portal.demo') if session.get('demo_system') else url_for('portal.demo_setup'))
     ready = bool(current_app.config['GOOGLE_CLIENT_ID'] and current_app.config['GOOGLE_CLIENT_SECRET'])
     return render_template('signin.html', mode='register' if request.args.get('mode')=='register' else 'login')
 
@@ -281,6 +286,7 @@ def delete_account():
 
 
 @portal.get('/demo')
+@portal.get('/energy')
 def demo():
     system = session.get('demo_system', {})
     provider = request.args.get('provider', system.get('provider', 'enphase'))
@@ -291,9 +297,22 @@ def demo():
     if scenario not in samples:
         scenario = 'sunny'
     generation, consumption = samples[scenario]
+    from appliance_planner import demo_forecast, STEP, clock
+    forecast = demo_forecast()
+    best_start = max(range(45), key=lambda i: sum(max(0, r['solar_kw']-r['home_kw']) for r in forecast[i:i+4]))
+    best_window = f"{clock(best_start*STEP)} - {clock((best_start+4)*STEP)}"
+    solar_kwh = sum(r['solar_kw'] * STEP for r in forecast)
+    home_kwh = sum(r['home_kw'] * STEP for r in forecast)
+    grid_kwh = sum(max(0, r['home_kw'] - r['solar_kw']) * STEP for r in forecast)
+    week = [dict(day=day, solar=round(solar_kwh*s, 1), usage=round(home_kwh*u, 1))
+            for day, s, u in [('Mon', .85, .95), ('Tue', .65, 1.1), ('Wed', 1, 1),
+                              ('Thu', .7, .9), ('Fri', .95, 1.05), ('Sat', .8, 1.2), ('Sun', 1, 1)]]
     return render_template('solar_demo.html', system=system, providers=PROVIDERS, provider=provider,
                            scenario=scenario, generation=generation, consumption=consumption,
-                           surplus=generation-consumption)
+                           surplus=generation-consumption, solar_kwh=solar_kwh, home_kwh=home_kwh,
+                           grid_kwh=grid_kwh, cost=grid_kwh*.30, week=week,
+                           chart_max=max(max(d['solar'], d['usage']) for d in week),
+                           forecast=forecast, best_start=best_start, best_window=best_window, clock=clock)
 
 
 @portal.post('/demo/signin')
@@ -307,7 +326,7 @@ def demo_signin():
     session['display_name']='Arush B'
     session['presentation_email']=email
     session['demo_profile'] = True
-    return redirect(url_for('portal.planner') if session.get('demo_system') else url_for('portal.demo_setup'))
+    return redirect(url_for('portal.demo') if session.get('demo_system') else url_for('portal.demo_setup'))
 
 
 @portal.route('/demo/setup', methods=['GET', 'POST'])
@@ -324,7 +343,7 @@ def demo_setup():
             flash('Select a provider and enter your inverter model and serial number.', 'error')
             return render_template('demo_setup.html', providers=PROVIDERS, system=request.form), 400
         session['demo_system'] = dict(name=name, provider=provider, model=model, serial=serial)
-        return redirect(url_for('portal.planner'))
+        return redirect(url_for('portal.demo'))
     return render_template('demo_setup.html', providers=PROVIDERS, system=system)
 
 
@@ -396,7 +415,7 @@ def day_planner():
         result=plan_day(demo_forecast(),tasks,parallel)
     except (ValueError,TypeError) as exc:error=str(exc)
     return render_template('day_planner.html',appliances=APPLIANCES,selected=selected,settings=settings,parallel=parallel,
-                           result=result,error=error,clock=clock)
+                           result=result,error=error,clock=clock,forecast=demo_forecast())
 
 @portal.post('/activity/complete')
 def complete_activity():

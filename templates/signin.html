@@ -1,9 +1,32 @@
 ﻿{% extends "base.html" %}
-{% block title %}SunIQ | {{ 'Register' if mode=='register' else 'Login' }}{% endblock %}
+{% block title %}SunIQ | {{ 'Request access' if mode=='register' else 'Sign in' }}{% endblock %}
 {% block content %}
-<section class="welcome-screen"><div class="sun-mark" aria-hidden="true">&#9728;</div><h1>Use your sunshine wisely.</h1><p>Choose a task. Find a better time to run it.</p>
-<div class="signin-white-card"><div class="auth-tabs"><a href="{{ url_for('portal.signin') }}" class="{{ 'selected' if mode!='register' else '' }}">Login</a><a href="{{ url_for('portal.signin',mode='register') }}" class="{{ 'selected' if mode=='register' else '' }}">Register</a></div>
+<section class="solar-welcome" aria-labelledby="welcome-title">
+<div class="solar-story">
+<p class="solar-kicker">SOLAR INSIGHTS &amp; PLANNING</p>
+<h1 id="welcome-title">Understand your solar energy.<br><span>Use it wisely.</span></h1>
+<p class="solar-intro">Set up your inverter. Plan your usage.<br>Make the most of your solar to help lower your electricity bill.</p>
+<div class="solar-preview">
+  <div class="preview-heading"><strong>A day in solar</strong></div>
+  <svg class="solar-day-chart" viewBox="0 0 480 154" role="img" aria-labelledby="solar-chart-title solar-chart-description">
+    <title id="solar-chart-title">Solar generation and home usage through the day</title>
+    <desc id="solar-chart-description">An illustrative solar curve peaks around midday, above household usage. This sunny window can be a useful time to plan appliances. This is sample data.</desc>
+    <path d="M20 124H460 M20 84H460 M20 44H460" stroke="#dce6db" fill="none"/>
+    <rect x="190" y="15" width="122" height="110" rx="12" fill="#fff1bb"/>
+    <path d="M20 124 C80 124 100 114 135 91 S200 22 244 23 S320 68 352 100 S416 124 460 124 L460 125H20Z" fill="#d5e9d8"/>
+    <path d="M20 124 C80 124 100 114 135 91 S200 22 244 23 S320 68 352 100 S416 124 460 124" stroke="#348157" stroke-width="3" fill="none"/>
+    <path d="M20 100 Q70 75 110 96 T200 101 T290 94 T380 80 T460 99" stroke="#ac7c22" stroke-width="2.5" stroke-dasharray="6 5" fill="none"/>
+    <circle cx="244" cy="23" r="6" fill="#edbd45" stroke="#fff" stroke-width="3"/>
+    <g fill="#65766b" font-size="11" font-family="system-ui, sans-serif"><text x="20" y="148">Morning</text><text x="222" y="148">Midday</text><text x="418" y="148">Evening</text></g>
+  </svg>
+  <div class="preview-legend"><span><i class="solar-key"></i>Solar generation</span><span><i class="usage-key"></i>Home usage</span></div>
+
+</div>
+<div class="login-features"><span>Energy overview</span><span>Daily usage</span><span>Appliance planning</span></div>
+<p class="solar-preview-note">Try planning with sample forecasts. Live provider connections and appliance control are not available yet.</p>
+</div>
+<div class="signin-white-card solar-auth"><div class="auth-welcome"><p class="auth-label">YOUR SUNIQ WORKSPACE</p><h2>{{ 'Request access' if mode=='register' else 'Sign in to SunIQ' }}</h2><p>{{ 'Request access to your solar workspace.' if mode=='register' else 'Sign in to your energy workspace.' }}</p></div><div class="auth-tabs"><a href="{{ url_for('portal.signin') }}" class="{{ 'selected' if mode!='register' else '' }}">Sign in</a><a href="{{ url_for('portal.signin',mode='register') }}" class="{{ 'selected' if mode=='register' else '' }}">Request access</a></div>
 <form method="post" action="{{ url_for('portal.access_request') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="mode" value="{{ mode }}">
-{% if mode=='register' %}<label class="name-field">Name<input name="name" autocomplete="name" maxlength="80" required></label>{% endif %}<label class="name-field">Email<input type="email" name="email" autocomplete="email" maxlength="254" required></label><label class="name-field">Password<input type="password" name="password" autocomplete="{{ 'new-password' if mode=='register' else 'current-password' }}" maxlength="256" required></label><button class="primary-button" type="submit">{{ 'Register' if mode=='register' else 'Login' }}</button></form>
-<small>Access is by approval. Registration is completed after a review.</small></div></section>
+{% if mode=='register' %}<label class="name-field">Full name<input placeholder="Your name" name="name" autocomplete="name" maxlength="80" required></label>{% endif %}<label class="name-field">Email address<input placeholder="you@example.com" type="email" name="email" autocomplete="email" maxlength="254" required></label><label class="name-field">Password<input placeholder="Enter your password" type="password" name="password" autocomplete="{{ 'new-password' if mode=='register' else 'current-password' }}" maxlength="256" required></label><button class="primary-button" type="submit">{{ 'Request access' if mode=='register' else 'Sign in' }}</button></form>
+<small>{{ 'New accounts require approval before access is enabled.' if mode=='register' else 'Use your approved account to continue.' }}</small><a class="login-privacy" href="{{ url_for('portal.privacy') }}">Privacy &amp; data</a></div></section>
 {% endblock %}

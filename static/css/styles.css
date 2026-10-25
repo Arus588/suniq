@@ -151,3 +151,28 @@ input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible {
 .solar-metrics .metric strong { font-size:2.3rem; letter-spacing:-.04em; }
 .solar-metrics .metric strong small { display:inline; font-size:.9rem; letter-spacing:0; }
 @media(max-width:38rem) { .form-columns { grid-template-columns:1fr; } .energy-flow { gap:.5rem; font-size:.8rem; } .polished-signin .auth-card { padding:1.4rem; } }
+
+/* Shared application navigation. */
+.site-header { gap:1rem; flex-wrap:wrap; }
+.site-header nav { align-items:center; gap:.7rem 1.2rem; }
+.site-header nav form { margin:0; }
+.site-header nav a[aria-current=page] { text-decoration:underline; text-underline-offset:6px; }
+.nav-profile { display:inline-flex; align-items:center; gap:.5rem; font-size:.8rem; }
+.profile-avatar { display:grid; place-items:center; width:1.8rem; height:1.8rem; border-radius:50%; background:#e6f2e9; color:#216e49; font-weight:700; }
+.site-header nav .nav-auth { border:1px solid #94a596; border-radius:.5rem; padding:.45rem .75rem; background:transparent; color:inherit; font:inherit; font-size:.8rem; cursor:pointer; }
+@media(max-width:38rem) { .site-header nav { width:100%; gap:.65rem .9rem; } .site-header nav a { font-size:.75rem; } .nav-profile { margin-left:auto; } }
+
+.profile-menu { position:relative; font-size:.8rem; }
+.profile-menu > summary { cursor:pointer; list-style:none; padding:.5rem .7rem; border-radius:.5rem; color:var(--ink); }
+.profile-menu > summary::-webkit-details-marker { display:none; }
+.profile-menu > summary:hover { background:#34815712; }
+.profile-menu > summary span { margin-left:.4rem; color:#65766b; }
+.profile-dropdown { display:none; position:absolute; top:100%; right:0; min-width:140px; background:white; border:1px solid #dce5dc; border-radius:.6rem; padding:.4rem; box-shadow:0 8px 24px #173b2415; z-index:20; }
+.profile-menu[open] .profile-dropdown,.profile-menu:hover .profile-dropdown,.profile-menu:focus-within .profile-dropdown { display:block; }
+.site-header .profile-dropdown button { display:block; width:100%; text-align:left; padding:.65rem .8rem; color:#284c37; background:transparent; border:0; border-radius:.3rem; font:inherit; font-size:.8rem; cursor:pointer; }
+.site-header .profile-dropdown button:hover { background:#eef4ed; }
+.inverter-choice { display:grid; gap:.6rem; font-size:.85rem; margin:1.5rem 0 .7rem; }
+.inverter-hint { color:#65766b; font-size:.75rem; line-height:1.6; margin:0 0 1.4rem; }
+.brand-group { display:flex; align-items:center; gap:1rem; }
+.site-header .creator-nav-link { color:#65766b; font-size:.7rem; font-weight:400; text-decoration:none; white-space:nowrap; }
+.site-header .creator-nav-link:hover,.site-header .creator-nav-link[aria-current=page] { text-decoration:underline; text-underline-offset:4px; }

@@ -44,7 +44,7 @@
       }
       if (!response.ok) throw new Error('Unable to save inverter');
       const destination = new URL(response.url);
-      if (!['/demo','/planner'].includes(destination.pathname)) {
+      if (!['/energy','/demo','/planner'].includes(destination.pathname)) {
         window.location.assign(destination.href);
         return;
       }

@@ -1,9 +1,33 @@
 {% extends "base.html" %}
-{% block title %}SunIQ | My energy<p class="forecast-disclosure">Illustrative readings, not a live inverter connection.</p>{% endblock %}
+{% block title %}SunIQ | My energy{% endblock %}
 {% block content %}
-<section class="energy-screen"><div class="overview-heading"><div><p class="eyebrow">{{ system.name or 'My home solar' }}</p><h1>My energy</h1></div><a href="{{ url_for('portal.demo_setup') }}">{{ providers[provider][0] }}{% if system.model %} &middot; {{ system.model }}{% endif %} &rsaquo;</a></div>
-<section class="energy-advice {{ 'positive' if surplus > 0 else 'waiting' }}"><span class="advice-icon" aria-hidden="true">{{ '&#9728;'|safe if surplus > 0 else '&#9790;'|safe }}</span><h2>{{ 'A good time to use solar.' if surplus > 0 else 'Save optional tasks for later.' }}</h2><p>{{ 'Your solar generation is higher than household demand.' if surplus > 0 else 'Your home is using more power than your panels generate.' }}</p></section>
-<div class="energy-numbers"><div><span>Solar</span><strong>{{ '%.2f'|format(generation / 1000) }}</strong><small>kW generated</small></div><div><span>Home</span><strong>{{ '%.2f'|format(consumption / 1000) }}</strong><small>kW used</small></div><div><span>Balance</span><strong>{{ '%+.2f'|format(surplus / 1000) }}</strong><small>kW difference</small></div></div>
-
+<section class="energy-screen"><div class="overview-heading"><h1>My energy</h1><a href="{{ url_for('portal.demo_setup') }}">{{ system.name or 'My home solar' }} &middot; {{ providers[provider][0] }}{% if system.model %} &middot; {{ system.model }}{% endif %} &rsaquo;</a></div>
+<div class="energy-status"><strong>{{ 'Solar is covering your home use.' if surplus > 0 else 'Your home needs grid power.' }}</strong><span>Power &middot; kW</span></div>
+<div class="energy-numbers"><div><span>Solar power now</span><strong>{{ '%.2f'|format(generation / 1000) }}</strong><small>kW being generated</small></div><div><span>Home power now</span><strong>{{ '%.2f'|format(consumption / 1000) }}</strong><small>kW being used</small></div><div><span>Power balance now</span><strong>{{ '%+.2f'|format(surplus / 1000) }}</strong><small>kW solar minus home use</small></div></div>
+<p class="energy-units-note">kW shows power at a moment. kWh shows energy over time &mdash; 1 kW for 1 hour equals 1 kWh.</p>
+<div class="daily-energy-cards">
+<article><span>Solar energy for the day</span><strong>{{ '%.1f'|format(solar_kwh) }} <small>kWh</small></strong></article>
+<article><span>Home energy for the day</span><strong>{{ '%.1f'|format(home_kwh) }} <small>kWh</small></strong></article>
+<article><span>Daily grid cost</span><strong>${{ '%.2f'|format(cost) }}</strong><p>Estimate at $0.30/kWh</p></article>
+</div>
+<section class="solar-outlook" aria-labelledby="outlook-title">
+<div class="outlook-heading"><h2 id="outlook-title">Solar outlook</h2></div>
+<div class="outlook-stats"><div><span>Expected solar / full day</span><strong>{{ '%.1f'|format(solar_kwh) }} kWh</strong></div><div><span>Best 2-hour solar window</span><strong>{{ best_window }}</strong></div></div>
+<p class="outlook-description">Expected solar power across the day. The highlighted window has the most solar left after home usage.</p>
+<div class="outlook-chart" role="img" aria-label="Sample half-hour solar forecast, with a two-hour recommended window at {{ best_window }}. Peak power is about 4.5 kW.">
+{% for slot in forecast %}<div class="outlook-slot {{ 'outlook-best' if best_start <= loop.index0 < best_start+4 else '' }}" title="{{ clock(slot.hour) }}: {{ '%.2f'|format(slot.solar_kw) }} kW solar, {{ '%.2f'|format(slot.home_kw) }} kW home"><span style="height:{{ slot.solar_kw/4.5*100 }}%"></span></div>{% endfor %}
+</div><div class="live-time-axis"><span>12 AM</span><span>6 AM</span><span>Noon</span><span>6 PM</span><span>12 AM</span></div>
+<details class="outlook-details"><summary>Forecast details</summary><p>This fixed sunny-day forecast demonstrates planning. It does not use weather or live inverter readings. The suggested window maximizes forecast solar surplus; individual appliance times depend on their power, duration, and overlap.</p><div class="table-scroll"><table><thead><tr><th>Time</th><th>Solar (kW)</th><th>Home (kW)</th></tr></thead><tbody>{% for slot in forecast %}<tr><td>{{ clock(slot.hour) }}</td><td>{{ '%.2f'|format(slot.solar_kw) }}</td><td>{{ '%.2f'|format(slot.home_kw) }}</td></tr>{% endfor %}</tbody></table></div></details>
+<a class="outlook-link" href="{{ url_for('portal.day_planner') }}">Plan appliances around this forecast &rarr;</a>
 </section>
-<p class="forecast-disclosure">Illustrative readings, not a live inverter connection.</p>{% endblock %}
+<section class="weekly-energy" aria-labelledby="weekly-title"><div class="overview-heading"><div><h2 id="weekly-title">Daily usage</h2><p>Weekly energy &middot; kWh</p></div></div>
+<div class="weekly-legend"><span><i></i>Solar generated</span><span><i></i>Home usage</span></div>
+<div class="weekly-bars" role="img" aria-label="Sample daily solar generation and home usage from Monday to Sunday. Exact values are available in the table below.">
+{% for day in week %}<div class="weekly-day"><div class="weekly-pair"><span class="weekly-solar" style="height:{{ day.solar/chart_max*100 }}%"></span><span class="weekly-home" style="height:{{ day.usage/chart_max*100 }}%"></span></div><span>{{ day.day }}</span></div>{% endfor %}
+</div>
+<details class="plan-details"><summary>View daily values</summary><table><thead><tr><th scope="col">Day</th><th scope="col">Solar (kWh)</th><th scope="col">Home (kWh)</th></tr></thead><tbody>{% for day in week %}<tr><th scope="row">{{ day.day }}</th><td>{{ day.solar }}</td><td>{{ day.usage }}</td></tr>{% endfor %}</tbody></table></details>
+</section>
+<div class="energy-next"><div><h2>Use more of your solar.</h2></div><a class="primary-button" href="{{ url_for('portal.day_planner') }}">Plan my day &rarr;</a><a href="{{ url_for('portal.planner') }}">Plan one appliance</a></div>
+<p class="forecast-disclosure">Simulated data until live inverter integration is available. Cost assumes $0.30/kWh and excludes credits, fixed charges, and taxes.</p>
+</section>
+{% endblock %}
