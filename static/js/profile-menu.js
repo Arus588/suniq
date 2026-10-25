@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
  document.querySelectorAll('.profile-menu').forEach(menu => {
   menu.addEventListener('mouseenter',() => { menu.open=true; });
   menu.addEventListener('mouseleave',() => { if (!menu.contains(document.activeElement)) menu.open=false; });

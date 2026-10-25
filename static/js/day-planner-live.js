@@ -43,4 +43,4 @@
   root.addEventListener('input',update);
   document.getElementById('reset-day').addEventListener('click',() => { tasks.forEach(t => {t.slider.value=t.initial; t.check.checked=t.check.defaultChecked;}); update(); });
   update();
-})();
+})();
