@@ -1,0 +1,52 @@
+CREATE SUNIQ GOOGLE SLIDES ON ANY COMPUTER
+
+Files to take with you:
+  Create-SunIQ-Google-Slides.gs
+That one file includes the narrative, speaker notes, and three app screenshots.
+The SunIQ server does not have to run on the other computer.
+
+1. Open https://script.google.com/ and sign in to your Google account.
+2. Choose New project.
+3. Open Create-SunIQ-Google-Slides.gs in a text editor. Copy ALL its content.
+4. Replace everything in the Apps Script editor's Code.gs with that content.
+5. Near the top, change presenterName from 'Arush' to the full participant name(s).
+6. Save. Select createSunIQSlides in the function dropdown and click Run.
+7. Review and grant the requested Google Slides permissions for your own script.
+   If your school/work administrator blocks authorization, use an account that permits Apps Script.
+8. Open Execution log. Click or copy the URL after “SunIQ deck created:”.
+   The presentation will also appear in your Google Drive.
+
+No API key, paid service, advanced API setup, local Python, or PowerPoint is needed.
+Each run creates a separate new deck. It does not edit an existing deck or make the deck public.
+
+WHAT IT CREATES
+1. SunIQ introduction / login
+2. Why SunIQ is needed
+3. Home inverter
+4. Set up inverter details
+5. Solar dashboard, with embedded screenshot
+6. Appliance timing, with embedded screenshot
+7. Recommendation logic and coding tools, with embedded screenshot
+8. Value and next steps
+
+Your speaking script and recording cues appear in each slide's speaker notes.
+Show the live login page during the introduction, and film your own inverter during slide 3.
+After creation, you can add your own inverter photo with Insert > Image.
+The optional homeInverterImageUrl setting also accepts a publicly accessible PNG/JPEG URL.
+No photo or serial number for your actual inverter has been assumed or included.
+
+Before submitting: use all participants' full names, add your own coding contribution,
+rehearse the whole demo below 3 minutes, and keep sample-data disclosures.
+Entering the serial number sets up inverter details; it does not connect to live inverter data.
+
+To get PowerPoint afterward: in the completed Google Slides deck choose
+File > Download > Microsoft PowerPoint (.pptx).
+
+VERIFICATION
+The script was syntax-checked and its local mock smoke check verifies eight slides,
+embedded image handling, note insertion, and removal of only the new deck's starter slide.
+Google account authorization and actual Google Slides rendering must be verified after Run.
+
+Google documentation:
+https://developers.google.com/apps-script/reference/slides/
+https://developers.google.com/apps-script/reference/slides/notes-page

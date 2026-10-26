@@ -1,0 +1,57 @@
+SUNIQ — SIMPLE DEMO SCRIPT
+Target: 2 minutes 40 seconds to 2 minutes 55 seconds, including clicks.
+Read only the SAY sections aloud. SHOW sections are recording cues.
+Replace [last name] and the final contribution line before recording.
+
+1. START AT LOGIN | 0:00–0:15
+SHOW: Open /signin. Keep your password hidden. Sign in using your approved account.
+SAY:
+“Hi, I’m Arush [last name], and this is SunIQ. It helps people with home solar choose better times to run appliances. Let me sign in and show you how it works.”
+
+2. WHY DO WE NEED THIS? | 0:15–0:35
+SHOW: Slide 2: Why SunIQ?
+SAY:
+“Solar power changes throughout the day, but we often run appliances whenever it is convenient. Even with solar panels, a home may need grid power when sunlight is low. SunIQ’s goal is to make that timing decision easier.”
+
+3. SHOW MY HOME INVERTER | 0:35–0:50
+SHOW: Film your installed inverter from the outside. Point to the manufacturer, model, and serial-number label. Keep the full serial number out of the public video. Do not open the enclosure.
+SAY:
+“This is the inverter at my house. It converts electricity from our solar panels into power our home can use. Its label identifies the model and serial number. Those details are part of SunIQ’s setup.”
+
+4. SET UP THE INVERTER IN SUNIQ | 0:50–1:10
+SHOW: On “Choose your inverter,” select the matching provider and model. Use a masked or example serial number for recording. Click Continue. If your saved account opens the dashboard directly, record setup separately rather than claiming this page appears on every login.
+SAY:
+“In SunIQ, I select the provider and enter the inverter model and serial number. Then I continue to my workspace. This prototype saves those details for the session; it does not connect to the inverter yet. The dashboard currently uses sample data.”
+
+5. UNDERSTAND THE DASHBOARD | 1:10–1:30
+SHOW: /demo. Point to solar power, home power, and the solar outlook.
+SAY:
+“The dashboard compares solar generation with home usage. It also shows a sample forecast for the day. That helps answer the next question: when could I run an appliance using more of the available solar?”
+
+6. SHOW THE MAIN FEATURE | 1:30–2:00
+SHOW: Click Plan my day. Select dishwasher, washing machine, and EV charging. First move them to evening, then toward midday. Point to solar coverage and grid energy. Pause briefly so viewers can read the change.
+SAY:
+“Here I choose the appliances I need and move their start times. In the evening, these tasks need more grid energy. Moving them toward midday increases their estimated solar coverage. The total appliance energy stays the same; its source changes. Overlapping tasks share the available solar, so the same energy is not counted twice.”
+
+7. EXPLAIN THE CODE | 2:00–2:20
+SHOW: /planner. Show the recommended start and open Why this time.
+SAY:
+“For one appliance, SunIQ checks half-hour start times between the earliest start and deadline. It reserves household demand first, then chooses the earliest time with the least extra grid energy. I used Python and Flask, with HTML, CSS, and JavaScript.”
+
+8. END WITH VALUE AND NEXT STEP | 2:20–2:45
+SHOW: Final slide, or stay on the planner.
+SAY:
+“My goal is to make solar planning easier to understand and use. SunIQ gives estimates; it does not turn appliances on or guarantee savings. Next, I want to add an authorized live inverter connection and weather forecasts, then compare the estimates with real measurements.”
+
+OPTIONAL PERSONAL LINE | leave up to 10 seconds
+Add one truthful sentence in your own words:
+“My main coding contribution was ___, and the hardest part I solved was ___.”
+Do not leave blanks in the recording. If you include this line, shorten an earlier section to stay below three minutes.
+
+RECORDING ORDER
+Login → why it matters → home inverter → inverter setup → dashboard → day planner → explanation → next step.
+
+Use the app screen for most of the video. Slides 2 and 8 are useful pauses; the remaining slides can support a live presentation or replace a transition. Do not read slide bullets and the script twice.
+
+ACCURACY CHECK
+The setup animation says “Connecting your inverter,” but there is no live provider connection in the current implementation. Say “set up my inverter details” rather than “connected using the serial number.” The serial number alone does not authorize data access. Household readings and forecasts are illustrative. Keep this distinction in the recording.

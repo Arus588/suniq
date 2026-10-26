@@ -12,3 +12,8 @@ data/*.csv
 # Editor files
 .vscode/
 .idea/
+
+# Office lock files and temporary presentation exports
+~$*
+docs/demo-video/
+docs/slides-preview/
