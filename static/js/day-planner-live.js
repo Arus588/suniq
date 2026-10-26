@@ -3,11 +3,59 @@
   if (!root) return;
   const forecast = JSON.parse(document.getElementById('day-forecast').textContent);
   const dailySolar = forecast.reduce((sum, slot) => sum + Math.max(0, slot.solar_kw-slot.home_kw)*.5, 0);
-  const tasks = [...root.querySelectorAll('.live-appliance')].map(row => ({
+  const taskFromRow = row => ({
     row, check: row.querySelector('input[type=checkbox]'), slider: row.querySelector('input[type=range]'),
     power: Number(row.dataset.power), duration: Number(row.dataset.duration),
     initial: row.querySelector('input[type=range]').value
-  }));
+  });
+  let tasks = [...root.querySelectorAll('.live-appliance')].map(taskFromRow);
+  let nextCustomId = 0;
+  const customForm = document.getElementById('add-appliance-form');
+  const status = document.getElementById('custom-appliance-status');
+  const rowTemplate = root.querySelector('.live-appliance').cloneNode(true);
+  customForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const nameInput = customForm.elements.namedItem('name');
+    const name = nameInput.value.trim();
+    nameInput.setCustomValidity(name ? '' : 'Enter an appliance name.');
+    if (!customForm.reportValidity()) return;
+    const power = Number(customForm.elements.namedItem('power').value) / 1000;
+    const duration = Number(customForm.elements.namedItem('duration').value);
+    const row = rowTemplate.cloneNode(true);
+    row.dataset.power = power;
+    row.dataset.duration = duration;
+    row.querySelector('strong').textContent = name;
+    row.querySelector('.live-appliance-heading > span').textContent = `${(power * duration).toFixed(1)} kWh · ${duration} h`;
+    const checkbox = row.querySelector('input[type=checkbox]');
+    checkbox.checked = checkbox.defaultChecked = true;
+    const slider = row.querySelector('input[type=range]');
+    slider.id = `start-custom-${++nextCustomId}`;
+    slider.max = 24 - duration;
+    slider.value = 8;
+    slider.setAttribute('aria-label', `${name} start time`);
+    row.querySelector('.live-appliance-timing label').htmlFor = slider.id;
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'remove-appliance';
+    remove.textContent = 'Remove';
+    remove.setAttribute('aria-label', `Remove ${name}`);
+    remove.addEventListener('click', () => {
+      tasks = tasks.filter(task => task.row !== row);
+      row.remove();
+      update();
+      status.textContent = `${name} removed.`;
+      customForm.closest('details').querySelector('summary').focus();
+    });
+    row.querySelector('.live-appliance-heading').append(remove);
+    root.append(row);
+    tasks.push(taskFromRow(row));
+    update();
+    status.textContent = `${name} added. Adjust its start time below.`;
+    customForm.reset();
+    customForm.closest('details').open = false;
+    slider.focus();
+  });
+  customForm.elements.namedItem('name').addEventListener('input', event => event.target.setCustomValidity(''));
   const clock = h => {
     const minutes = Math.round(h*60), hours = Math.floor(minutes/60);
     return `${hours%12 || 12}:${String(minutes%60).padStart(2,'0')} ${hours>=12 && hours<24?'PM':'AM'}${hours===24?' (+1 day)':''}`;

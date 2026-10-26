@@ -354,4 +354,33 @@
 .outlook-stats { display:flex; flex-wrap:wrap; gap:1rem 2rem; margin:1rem 0; }.outlook-stats span { display:block; color:#65766b; font-size:.75rem; }.outlook-stats strong { display:block; font-size:1.1rem; color:#216e49; margin-top:.4rem; }
 .outlook-description,.outlook-details p { color:#65766b; font-size:.75rem; line-height:1.6; }
 .outlook-chart { height:105px; display:flex; gap:3px; border-bottom:1px solid #dce5dc; margin:1rem 0 .6rem; }.outlook-slot { flex:1; display:flex; align-items:end; }.outlook-slot span { width:100%; background:#aacbb0; border-radius:3px 3px 0 0; min-height:2px; }.outlook-best { background:#fff2cf; }.outlook-best span { background:#216e49; }
-.outlook-details { margin-top:1rem; font-size:.75rem; color:#526b59; }.outlook-details summary { cursor:pointer; }.outlook-link { display:block; margin-top:1rem; font-size:.8rem; }
+.outlook-details { margin-top:1rem; font-size:.75rem; color:#526b59; }.outlook-details summary { cursor:pointer; }
+.usage-controls { display:flex; flex-wrap:wrap; align-items:end; gap:.75rem; margin:1rem 0; }
+.usage-controls label { display:grid; gap:.35rem; font-size:.75rem; color:#526b59; }
+.usage-controls select,.usage-controls input { padding:.6rem; min-width:8rem; border:1px solid #cbd9ce; border-radius:.4rem; background:white; color:#153f30; font:inherit; }
+.usage-controls button { padding:.65rem 1rem; border:0; border-radius:.4rem; background:#216e49; color:white; cursor:pointer; }
+.usage-chart-scroll { overflow-x:auto; padding-top:1.5rem; }
+.usage-chart-scroll .weekly-bars { gap:1rem; margin-top:0; }
+.usage-chart-scroll .weekly-day { min-width:100px; }
+.usage-chart-scroll .weekly-pair { gap:18px; height:180px; margin-top:1rem; }
+.usage-chart-scroll .weekly-pair > span { position:relative; width:28px; max-width:28px; min-height:1px; }
+.usage-chart-scroll .weekly-pair b { position:absolute; bottom:100%; left:50%; transform:translateX(-50%); padding-bottom:5px; font-size:.68rem; font-weight:600; color:#284c37; white-space:nowrap; }
+#usage-error { color:#a52b2b; }
+.add-appliance { margin:1rem 0; padding:1rem; border:1px solid #cbd9ce; border-radius:.8rem; background:white; }
+.add-appliance summary { color:#216e49; font-size:.9rem; font-weight:600; cursor:pointer; }
+.custom-appliance-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; margin-top:1rem; }
+.custom-appliance-form label { display:grid; gap:.4rem; color:#526b59; font-size:.75rem; }
+.custom-appliance-form label:first-child { grid-column:1/-1; }
+.custom-appliance-form input { width:100%; min-width:0; padding:.65rem; border:1px solid #cbd9ce; border-radius:.4rem; font:inherit; }
+.custom-appliance-form button { align-self:end; padding:.7rem 1rem; border:0; border-radius:.4rem; background:#216e49; color:white; cursor:pointer; }
+.add-appliance p,.custom-appliance-status { font-size:.75rem; color:#65766b; line-height:1.5; }
+.custom-appliance-status:empty { display:none; }
+.remove-appliance { border:0; background:transparent; color:#8b332a; font-size:.75rem; cursor:pointer; padding:.3rem; }
+.home-load-details { margin:0 0 1.2rem; color:#526b59; font-size:.8rem; }
+.home-load-details summary { color:#216e49; cursor:pointer; }
+.home-load-details p { line-height:1.6; font-size:.75rem; }
+.home-load-details ul { list-style:none; padding:0; max-width:30rem; }
+.home-load-details li { display:flex; justify-content:space-between; gap:1rem; padding:.35rem 0; }
+.home-load-details b { white-space:nowrap; font-weight:600; }
+.home-load-details .home-load-total { font-weight:600; color:#284c37; }
+@media(max-width:38rem) { .custom-appliance-form { grid-template-columns:1fr; } }

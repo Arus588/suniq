@@ -12,6 +12,15 @@
 <p class="solar-budget-note">Sample forecast after home usage. Remaining solar is available only when generated.</p>
 <div class="live-energy-total"><div><span>Appliance solar coverage</span><strong id="live-solar-percent">0%</strong></div><div class="live-energy-breakdown"><span id="live-energy-total">0 kWh total</span><span id="live-energy-split">0 solar · 0 grid</span></div><div class="live-solar-meter"><span id="live-solar-fill"></span></div></div>
 <div class="live-forecast" aria-label="Sample solar available after household use"><span>Available solar</span><div class="live-forecast-bars" aria-hidden="true">{% for slot in forecast %}<i style="height:{{ [2, (slot.solar_kw-slot.home_kw)*20]|max }}%"></i>{% endfor %}</div><div class="live-time-axis"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div></div>
+<details class="add-appliance"><summary>+ Add appliance</summary>
+<form id="add-appliance-form" class="custom-appliance-form">
+<label>Appliance name<input name="name" maxlength="60" placeholder="e.g. Pool pump" required></label>
+<label>Average power (watts)<input name="power" type="number" min="50" max="20000" step="1" value="1000" required></label>
+<label>Run duration (hours)<input name="duration" type="number" min="0.5" max="12" step="0.5" value="1" required></label>
+<button type="submit">Add to my day</button>
+</form><p>Use average running power. Custom appliances stay on this page until you refresh.</p>
+</details>
+<p id="custom-appliance-status" class="custom-appliance-status" role="status"></p>
 <div id="live-appliances">
 {% for key,item in appliances.items() %}
 {% set chosen=namespace(start=8) %}{% if result %}{% for row in result.rows %}{% if row.id==key %}{% set chosen.start=row.start %}{% endif %}{% endfor %}{% endif %}

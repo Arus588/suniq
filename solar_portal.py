@@ -293,10 +293,20 @@ def demo():
     if provider not in PROVIDERS:
         provider = 'other'
     scenario = request.args.get('scenario', 'sunny')
-    samples = {'sunny': (4200, 1600), 'cloudy': (900, 1600), 'evening': (100, 2100)}
+    samples = {'sunny': 4200, 'cloudy': 900, 'evening': 100}
     if scenario not in samples:
         scenario = 'sunny'
-    generation, consumption = samples[scenario]
+    generation = samples[scenario]
+    running_appliances = [
+        dict(name='Air conditioning', watts=1200),
+        dict(name='Refrigerator', watts=150),
+        dict(name='TV', watts=100),
+        dict(name='Lights', watts=100),
+        dict(name='Router and standby devices', watts=50),
+    ]
+    if scenario == 'evening':
+        running_appliances.append(dict(name='Cooking appliances (average)', watts=500))
+    consumption = sum(item['watts'] for item in running_appliances)
     from appliance_planner import demo_forecast, STEP, clock
     forecast = demo_forecast()
     best_start = max(range(45), key=lambda i: sum(max(0, r['solar_kw']-r['home_kw']) for r in forecast[i:i+4]))
@@ -309,6 +319,7 @@ def demo():
                               ('Thu', .7, .9), ('Fri', .95, 1.05), ('Sat', .8, 1.2), ('Sun', 1, 1)]]
     return render_template('solar_demo.html', system=system, providers=PROVIDERS, provider=provider,
                            scenario=scenario, generation=generation, consumption=consumption,
+                           running_appliances=running_appliances,
                            surplus=generation-consumption, solar_kwh=solar_kwh, home_kwh=home_kwh,
                            grid_kwh=grid_kwh, cost=grid_kwh*.30, week=week,
                            chart_max=max(max(d['solar'], d['usage']) for d in week),
